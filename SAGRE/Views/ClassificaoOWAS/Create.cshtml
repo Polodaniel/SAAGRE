@@ -1,0 +1,112 @@
+﻿@model SAGRE.Models.MetodosAnalise.ClassificaoOWAS
+
+@{
+    ViewData["Title"] = "Nova Classificação";
+}
+
+
+<div class="col mt-2">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Ínicio</a></li>
+            <li class="breadcrumb-item"><a asp-controller="ClassificaoOWAS" asp-action="Index">Classificação OWAS</a></li>
+            <li class="breadcrumb-item active" aria-current="page">@ViewData["Title"]</li>
+        </ol>
+    </nav>
+
+    <div class="row">
+        <div class="col">
+            <div class=" ml-1">
+                <div class="card">
+                    <div class="row p-2"></div>
+
+                    <h1 class="text-center">Ops! A página não pode ser encontrada !</h1>
+                    <hr />
+                    <p class="pl-4 small font-weight-bold">Algumas possiveis explicações:</p>
+
+                    <div class="pl-4 small"><span class="font-weight-bold">Explicação do conselheiro da igreja:</span> E o que você sentiu quando o link não se abriu?</div>
+                    <div class="pl-4 small"><span class="font-weight-bold">Explicação Batista:</span> Deve haver pecado em sua vida. Todos os outros abriram bem.</div>
+                    <div class="pl-4 small"><span class="font-weight-bold">Explicação presbiteriana:</span> Não é da vontade de Deus que você abra este link.</div>
+                    <div class="pl-4 small"><span class="font-weight-bold">Explicação da Palavra de Fé:</span> Você não tem fé para abrir este link. Suas palavras negativas impediram você de perceber o cumprimento deste link.</div>
+                    <div class="pl-4 small"><span class="font-weight-bold">Explicação carismática:</span> Tu és solto! Seja comandado para ABRIR!</div>
+                    <div class="pl-4 small"><span class="font-weight-bold">Explicação unitarista:</span> Todos os links são iguais, portanto, se esse link não funcionar para você, sinta-se à vontade para experimentar outros links que possam lhe trazer alegria e satisfação.</div>
+                    <div class="pl-4 small"><span class="font-weight-bold">Explicação budista:</span> .........................</div>
+                    <div class="pl-4 small"><span class="font-weight-bold">Explicação episcopal:</span> Você está dizendo que tem algo contra os homossexuais?</div>
+                    <div class="pl-4 small"><span class="font-weight-bold">Explicação da Ciência Cristã:</span> Não há realmente nenhum link.</div>
+                    <div class="pl-4 small pb-5"><span class="font-weight-bold">Explicação ateísta:</span> A única razão pela qual você acha que esse link existe é porque você precisava inventá-lo.</div>
+
+                    @*<div class="card-header">
+                            Cadastro de Atividade
+                        </div>
+                        <div class="card-body">
+
+                            <div class="row">
+            <div class="col">
+                <div class="row">
+                    <div class="col-2 font-weight-bold">
+                        <label class="control-label">Costa</label>
+                    </div>
+                    <div class="col">
+                        <input asp-for="NumCosta" class="form-control" min="1" max="4" />
+                        <span asp-validation-for="NumCosta" class="text-danger"></span>
+                    </div>
+                </div>
+                <hr />
+                <div class="row">
+                    <div class="col-2 font-weight-bold">
+                        <label class="control-label">Braço</label>
+                    </div>
+                    <div class="col">
+                        <input asp-for="NumBraco" class="form-control" min="1" max="3" />
+                        <span asp-validation-for="NumBraco" class="text-danger"></span>
+                    </div>
+                </div>
+                <hr />
+                <div class="row">
+                    <div class="col-2 font-weight-bold">
+                        <label class="control-label">Pernas</label>
+                    </div>
+                    <div class="col">
+                        <input asp-for="NumPernas" class="form-control" min="1" max="7" />
+                        <span asp-validation-for="NumPernas" class="text-danger"></span>
+                    </div>
+                </div>
+                <hr />
+                <div class="row">
+                    <div class="col-2 font-weight-bold">
+                        <label class="control-label">Esforço</label>
+                    </div>
+                    <div class="col">
+                        <input asp-for="NumForca" class="form-control" min="1" max="3" />
+                        <span asp-validation-for="NumForca" class="text-danger"></span>
+                    </div>
+                </div>
+                <hr />
+                <div class="row">
+                    <div class="col-2 font-weight-bold">
+                        <label class="control-label">Categoria</label>
+                    </div>
+                    <div class="col">
+                        <input asp-for="NumCategoria" class="form-control" min="1" max="4" />
+                        <span asp-validation-for="NumCategoria" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col text-right">
+                <a asp-action="Index" class="btn btn-sm btn-secondary">Voltar</a>
+                <input type="submit" value="Salvar" class="btn btn-sm btn-success" />
+            </div>
+        </div>*@
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+    </div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

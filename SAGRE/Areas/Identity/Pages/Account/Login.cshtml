@@ -1,0 +1,102 @@
+﻿@page
+@model LoginModel
+
+@{
+    ViewData["Title"] = "Log in";
+}
+
+<link href="~/css/Estilos.css" rel="stylesheet">
+
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+<div class="col-md-3">
+    <section>
+        @{
+        if ((Model.ExternalLogins?.Count ?? 0) == 0)
+        {
+
+        }
+        else
+        {
+        <form asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
+            <div>
+                <p>
+                    @foreach (var provider in Model.ExternalLogins)
+                    {
+                    <button type="submit" class="btn btn-default" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
+                    }
+                </p>
+            </div>
+        </form>
+        }
+        }
+    </section>
+</div>
+<div class="col-md col-md-offset-2 mt-5">
+    <div class="margin_left">
+        <img src="~/images/Logo1.png" class="ml-2" alt="Alternate Text" />
+    </div>
+    <section class="small">
+        <form method="post">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="card z-depth-5" style="max-width: 40rem;">
+                <div class="card-body pt-2 pb-0">
+                    <div class="form-group mt-0">
+                        <div class="input-field">
+                            <i class="material-icons prefix tiny">lock_outline</i>
+                            <input id="email" type="email" class="validate" asp-for="Input.Email">
+                            <label for="email">E-mail</label>
+                            <span asp-validation-for="Input.Email" class="text-danger"></span>
+                        </div>
+                        <div class="input-field">
+                            <i class="material-icons prefix">vpn_key</i>
+                            <input id="password" type="password" class="validate" asp-for="Input.Password">
+                            <label for="password"> Senha</label>
+                            <span asp-validation-for="Input.Password" class="text-danger"></span>
+                        </div>
+
+                        <div class="row">
+                            <div class="col">
+                                <div class="small">
+                                    <label asp-for="Input.RememberMe">
+                                        <input type="checkbox" class="filled-in tiny" asp-for="Input.RememberMe" />
+                                        <span>@Html.DisplayNameFor(m => m.Input.RememberMe)</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-group text-right">
+                                    <button class="btn" style="background-color:#5bc0de ;" type="submit" name="action">
+                                        Logar-se
+                                        <i class="material-icons right">exit_to_app</i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <hr />
+                        <a asp-page="./ForgotPassword">Esqueceu sua senha?</a> |
+                        <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Criar uma Nova Conta</a>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </section>
+</div>
+
+@section Scripts {
+<partial name="_ValidationScriptsPartial" />
+
+<!-- Compiled and minified JavaScript -->
+
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+<script>
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    });
+</script>
+
+}

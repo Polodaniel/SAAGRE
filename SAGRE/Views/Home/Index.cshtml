@@ -1,0 +1,133 @@
+﻿@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="col mt-2 m-0">
+
+    <div class="row">
+        <div class="col-sm col-md col-lg col w-100 pr-0">
+            <nav aria-label="breadcrumb w-100 pr-0">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="#">Ínicio</a></li>
+                    <li class="breadcrumb-item active" aria-current="page"></li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+
+    <div class="row">
+
+        <div class="col-sm col-md-8 col-lg-8 col-12">
+
+            @{
+                var Config = @UserManager.GetUserName(User).ToString();
+
+                Config = Config.Replace("_", " ")
+                .Replace("-", " ")
+                .Replace(".", " ");
+
+                var Indice = Config.IndexOf("@");
+
+                Config = Config.Substring(0, Indice);
+
+                var Nome = Config;
+
+            }
+
+            @*<div class="row pl-3 mb-3">
+                    <div class="col-sm col col-md col-lg  card p-3 bg-light">
+                        <h1 class="display-4"> <span class="fontMsgBoasVindas">@ViewBag.Horario,<span class="text-capitalize"> @Nome!</span></span></h1>
+                        <p class="lead">Seja Bem Vindo(a) ao Sistema de Análise e Apoio a Gestão de Risco Ergonômico com base nos apontamentos realizado pelo fiscal.</p>
+                        <hr class="my-4">
+                        <p>Segue ao lado direito a contagem de Dados lançados no Sistema com os seus respectivos status.</p>
+                    </div>
+                </div>*@
+
+            <div class="row pl-3 mb-4" style="height: 94%">
+                <div class="col-sm col col-md col-lg  card pt-3 pl-3 bg-white">
+                    <h2 class=""> <span class="">@ViewBag.Horario,<span class="text-capitalize"> @Nome!</span></span></h2>
+                    <hr class="mt-2" />
+                    <p class="lead mb-4">Seja Bem Vindo(a) ao Sistema de Análise e Apoio a Gestão de Risco Ergonômico com base nos apontamentos realizado pelo Avaliador.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm col col-md col-lg w-100 pr-0">
+            <div class="row">
+                <div class="col small">
+                    <div class="card">
+                        <div class="card-header p-2">Informação</div>
+                        <div class="card-body p-0">
+                            <div class="row  p-1 alert alert-light ml-0 mr-0 mb-0 rounded-0 text-dark">
+                                <div class="col">Total Setores da Emp.</div>
+                                <div class="col-3 text-right mr-3 font-weight-bold">@ViewBag.TotalSetor</div>
+                            </div>
+                            <div class="row p-1 alert alert-light ml-0 mr-0 mb-0 rounded-0 text-dark">
+                                <div class="col">Total Local da Emp.</div>
+                                <div class="col-3 text-right mr-3 font-weight-bold">@ViewBag.TotalLocal</div>
+                            </div>
+                            <div class="row p-1 alert alert-light ml-0 mr-0 mb-0 rounded-0 text-dark">
+                                <div class="col">Total Atividade da Emp.</div>
+                                <div class="col-3 text-right mr-3 font-weight-bold">@ViewBag.TotalAtividade</div>
+                            </div>
+                            <div class="row p-1 alert alert-light ml-0 mr-0 rounded-0 text-dark">
+                                <div class="col">Total Avaliadores da Emp.</div>
+                                <div class="col-3 text-right mr-3 font-weight-bold">@ViewBag.TotalAvaliadores</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            @{
+                var Hora = string.Empty;
+                var Data = string.Empty;
+
+                if (!Equals(@ViewBag.UltimoBoletim, null))
+                {
+                    <div class="row mt-3 mb-4">
+                        <div class="col small">
+                            <div class="card">
+                                <div class="card-header p-2">Ultimo Boletim</div>
+                                <div class="card-body p-0">
+                                    <div class="row p-1 alert alert-info ml-0 mr-0 mb-0 rounded-0 border-bottom-0 text-dark">
+                                        <div class="col">Boletins Lançados</div>
+                                        <div class="col text-right mr-3 font-weight-bold">@ViewBag.TotalBoletins</div>
+                                    </div>
+                                    <div class="row p-1 alert alert-light ml-0 mr-0 mb-0 rounded-0 text-dark">
+                                        <div class="col">N° Boletim</div>
+                                        <div class="col text-right mr-3 font-weight-bold">@ViewBag.UltimoBoletim.CodigoFormatado</div>
+                                    </div>
+
+                                    @{
+                                        var data = @ViewBag.UltimoBoletim.Data;
+                                        Data = Convert.ToDateTime(data).ToShortDateString();
+                                        Hora = @ViewBag.UltimoBoletim.HoraInicio + " - " + @ViewBag.UltimoBoletim.HoraTermino;
+                                    }
+
+                                    <div class="row p-1 alert alert-light ml-0 mr-0 mb-0 rounded-0 text-dark">
+                                        <div class="col">Data de Lançamento</div>
+                                        <div class="col text-right mr-3 font-weight-bold">@Data</div>
+                                    </div>
+                                    <div class="row p-1 alert alert-light ml-0 mr-0 mb-0 rounded-0 text-dark">
+                                        <div class="col">Horario Inic./Term.</div>
+                                        <div class="col text-right mr-3 font-weight-bold">@Hora</div>
+                                    </div>
+                                    <div class="row p-1 alert alert-light ml-0 mr-0 mb-0 rounded-0 text-dark">
+                                        <div class="col">Nome do Avaliador</div>
+                                        <div class="col text-right mr-3 font-weight-bold">@ViewBag.UltimoBoletim.NomeFiscal</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</div>

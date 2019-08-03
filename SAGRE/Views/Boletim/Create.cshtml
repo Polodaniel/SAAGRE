@@ -1,0 +1,2226 @@
+﻿@model SAGRE.Models.BoletimModel
+
+@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+@{
+    ViewData["Title"] = "Novo Boletim de Risco";
+}
+
+<div class="col mt-2 mb-3">
+
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Ínicio</a></li>
+            <li class="breadcrumb-item"><a asp-controller="Boletim" asp-action="Index">Lançar Boletim</a></li>
+            <li class="breadcrumb-item active" aria-current="page">@ViewData["Title"]</li>
+        </ol>
+    </nav>
+
+    <div class="row">
+        <div class="col">
+            <div class=" ml-1">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col">
+                                @{
+                                    var Config = @UserManager.GetUserName(User).ToString();
+
+                                    Config = Config.Replace("_", " ").Replace("-", " ").Replace(".", " ");
+
+                                    var Indice = Config.IndexOf("@");
+
+                                    Config = Config.Substring(0, Indice);
+
+                                    var Nome = Config;
+
+                                }
+
+                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                <p class="">
+                                    <div class="alert alert-dark font-weight-bold" role="alert" data-toggle="" href="#MenuAnalisePostura" aria-expanded="false" aria-controls="MenuAnalisePostura">
+                                        <i class="fas fa-paste mr-2"></i> Dados do Boletim
+                                    </div>
+                                </p>
+
+                                <div class="row">
+                                    <div class="col-sm-12 col-12 col-md-2 col-lg-2">
+                                        <label class="control-label mb-0 small">Código</label>
+                                        <input type="text" class="form-control form-control form-control-sm" disabled />
+                                    </div>
+                                    <div class="col-sm col col-md col-lg">
+                                        <div class="form-group">
+                                            <label asp-for="Data" class="control-label mb-0 small"></label>
+                                            <input type="date" asp-for="Data" class="form-control form-control-sm" id="CampoData" />
+                                            <span asp-validation-for="Data" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 col-12 col-md-6 col-lg-6">
+                                        <div class="form-group">
+                                            <label class="control-label mb-0 small">Nome do Avaliador</label>
+                                            <input asp-for="NomeFiscal" class="form-control form-control-sm" value="@Nome.ToUpperInvariant()" id="NomeAvaliador" disabled />
+                                            <span asp-validation-for="NomeFiscal" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-12 col-12 col-md-6 col-lg-6">
+                                        <div class="form-group">
+                                            <label asp-for="Setor" class="control-label mb-0"></label>
+                                            <select asp-for="Setor" asp-items="@ViewBag.Setor" class="form-control form-control-sm custom-select" id="SetorSelecionado" onchange="javascript: BuscaLocal(this.value);"></select>
+                                            <span asp-validation-for="Setor" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 col-12 col-md-2 col-lg-2">
+                                        <div class="form-group">
+                                            <label class="control-label mb-0 small">Hora de Ínicio</label>
+                                            <input type="time" class="form-control form-control-sm" id="HoraInicio" onBlur="javascript: ConsomeTempo(this.value,1);" />
+                                            <span asp-validation-for="HoraInicio" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 col-12 col-md-2 col-lg-2">
+                                        <div class="form-group">
+                                            <label class="control-label mb-0 small">Hora de Termino</label>
+                                            <input type="time" class="form-control form-control-sm" id="HoraTermino" onBlur="javascript: ConsomeTempo(this.value,2);" />
+                                            <span asp-validation-for="HoraTermino" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 col-12 col-md-2 col-lg-2">
+                                        <div class="form-group">
+                                            <label class="control-label mb-0 small">Tempo Gasto</label>
+                                            <input type="text" class="form-control form-control-sm" id="TempoGastoInput" disabled />
+                                            <span asp-validation-for="TempoDuracao" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-12 col-12 col-md-6 col-lg-6">
+                                        <div class="row">
+                                            <div class="col-sm-12 col-12 col-md-12 col-lg-12">
+                                                <div class="form-group">
+                                                    <label asp-for="Local" class="control-label mb-0"></label>
+                                                    <select asp-for="Local" asp-items="@ViewBag.Local" class="form-control form-control-sm custom-select" id="LocalSelecionado"></select>
+                                                    <span asp-validation-for="Local" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-0">
+                                            <div class="col-sm-12 col-12 col-md-12 col-lg-12">
+                                                <div class="form-group">
+                                                    <label class="control-label mb-0">Atividade</label>
+                                                    <select asp-for="Atividade" asp-items="@ViewBag.Atividade" class="form-control form-control-sm custom-select mb-0" id="AtividadeSelecionado"></select>
+                                                    <span asp-validation-for="Atividade" class="text-danger"></span>
+                                                    <div class="small text-muted text-right mt-0">
+                                                        <a class="small text-muted text-right mt-0 font-weight-bold" data-toggle="modal" data-target="#CadastrarNovaAtividade" href="#">Cadastrar Nova Atividade</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 col-12 col-md-6 col-lg-6 mt-0">
+                                        <div class="form-group">
+                                            <label asp-for="Descricao" class="control-label mb-0"></label>
+                                            <textarea asp-for="Descricao" class="form-control form-control-sm" style="height: 120px;" id="DescricaoSelecionado"></textarea>
+                                            <span asp-validation-for="Descricao" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <p>
+                                    <div class="alert alert-dark" role="alert" data-toggle="collapse" href="#MenuAnalisePostura" aria-expanded="false" aria-controls="MenuAnalisePostura">
+                                        <div class="row">
+                                            <div class="col">
+                                                <i class="fas fa-street-view mr-2"></i> Análise Postura - OWAS
+                                            </div>
+                                        </div>
+                                    </div>
+                                </p>
+                                <div class="collapse" id="MenuAnalisePostura">
+                                    <div class="card card-body">
+
+                                        <div class="row">
+                                            <div class="col-sm-12 col-12 col-md-4 col-lg-4">
+                                                <div class="card">
+                                                    <div class="card-body small">
+                                                        <p class="m-0"> Postura das Costa: <span id="posCos">-</span></p>
+                                                        <p class="m-0"> Postura dos Braços: <span id="posBra">-</span></p>
+                                                        <p class="m-0"> Postura das Pernas: <span id="posPer">-</span></p>
+                                                        <p class="m-0"> Esforço: <span id="posEsf">-</span></ p >
+                                                    </div>
+                                                </div>
+                                                <div id="AreaTipoAnalise">
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-12 col-12 col-md-8 col-lg-8">
+
+                                                <div class="row">
+                                                    <div class="col-sm-12 col-12 col-md-4 col-lg-4 text-right">
+                                                        Postura das Costa:
+                                                    </div>
+                                                    <div class="col-sm-12 col-12 col-md-8 col-lg-8">
+                                                        <div class="form-group">
+                                                            <select class="custom-select custom-select-sm" id="sPosCos" required>
+                                                                <option value="0"> Selecione a postura.</option>
+                                                                <option value="1">Reto</option>
+                                                                <option value="2"> Inclinado </option>
+                                                                <option value="3"> Reto e Torcido</option>
+                                                                <option value="4"> Inclinado e Torcido</option>
+                                                            </select>
+                                                            <div class="invalid-feedback">Exemplo de feedback invalido para o select</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-sm-12 col-12 col-md-4 col-lg-4 text-right">
+                                                        Postura dos Braços:
+                                                    </div>
+                                                    <div class="col-sm-12 col-12 col-md-8 col-lg-8">
+                                                        <div class="form-group">
+                                                            <select class="custom-select custom-select-sm" id="sPosBra" required>
+                                                                <option value="0"> Selecione a postura.</option>
+                                                                <option value="1"> Dois Braços para Baixo</option>
+                                                                <option value="2"> Um Braço para Cima</option>
+                                                                <option value="3"> Dois Braços para Cima</option>
+                                                            </select>
+                                                            <div class="invalid-feedback">Exemplo de feedback invalido para o select</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-sm-12 col-12 col-md-4 col-lg-4 text-right">
+                                                        Postura das Pernas:
+                                                    </div>
+                                                    <div class="col-sm-12 col-12 col-md-8 col-lg-8">
+                                                        <div class="form-group">
+                                                            <select class="custom-select custom-select-sm" id="sPosPer" required>
+                                                                <option value="0"> Selecione a postura.</option>
+                                                                <option value="1"> Duas Pernas Retas</option>
+                                                                <option value="2"> Uma Perna Reta</option>
+                                                                <option value="3"> Duas Pernas Flexionadas</option>
+                                                                <option value="4"> Um Perna Flexionada</option>
+                                                                <option value="5"> Uma Perna Ajoelhada</option>
+                                                                <option value="6"> Deslocamento com as Pernas</option>
+                                                                <option value="7"> Duas Pernas Suspensas</option>
+                                                            </select>
+                                                            <div class="invalid-feedback">Exemplo de feedback invalido para o select</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-sm-12 col-12 col-md-4 col-lg-4 text-right">
+                                                        Esforço:
+                                                    </div>
+                                                    <div class="col-sm-12 col-12 col-md-8 col-lg-8">
+                                                        <div class="form-group">
+                                                            <select class="custom-select custom-select-sm" id="sPosEsf" required>
+                                                                <option value="0"> Selecione a postura.</option>
+                                                                <option value="1"> Carga menor ou igual a 10 Kg</option>
+                                                                <option value="2"> Carga maior que 10 Kg e menor ou igual 20 Kg</option>
+                                                                <option value="3"> Carga Maior que 20 Kg</option>
+                                                            </select>
+                                                            <div class="invalid-feedback">Exemplo de feedback invalido para o select</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-sm-12 col-12 col-md-12 col-lg-12 text-right ml-0">
+                                                        <a class="btn btn-sm btn-danger text-light" onclick="LimparInputsPostura()">Limpar Campos</a>
+                                                        <a class="btn btn-sm btn-success text-light" onclick="InformarAnalisePostura()">Informar Análise</a>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <p>
+                                    <div class="alert alert-dark" role="alert" data-toggle="collapse" href="#MenuAnaliseCorpo" aria-expanded="false" aria-controls="MenuAnaliseCorpo">
+                                        <div class="row">
+                                            <div class="col">
+                                                <i class="fas fa-brain mr-2"></i> Análise Cognitiva - NASA TLX
+                                            </div>
+                                        </div>
+                                    </div>
+                                </p>
+                                <div class="collapse" id="MenuAnaliseCorpo">
+
+                                    <div class="card p-3">
+                                        <h5 class="mb-0">Escala de Magnitude</h5>
+                                        <hr class="mt-1" />
+                                        <div class="card-body">
+
+                                            <div class="row">
+                                                <div class="col-sm col col-md col-lg">
+                                                    <a class="m-0 small font-weight-bold" data-toggle="tooltip" data-placement="top" title="Quanto  de  atividade  mental,  de  concentração  e  de  atenção  são  exigidos para a execução da tarefa (ex: pensando, decidindo, calculando, lembrando, pesquisando)? A tarefa é fácil, simples, alcançou sem dificuldade o objetivo exato? (indica LIMITE  BAIXO  na  escala);  Ou  foi  difícil,  complexa, exigiu  muito  esforço mental para tentar alcançar um objetivo? (indica LIMITE ALTO na escala).">
+                                                        Demanda Mental
+                                                    </a>
+                                                    <hr class="mt-1" />
+                                                    <div class="row">
+                                                        <div class="col-sm col col-md col-lg">
+                                                            Baixo
+                                                        </div>
+                                                        <div class="col-sm col col-md col-lg">
+                                                            <input id="valorDM" type="range" name="vol" value="0" min="0" max="100" step="5" oninput="displayDM.value=value" onchange="displayDM.value=value">
+                                                        </div>
+                                                        <div class="col-sm col col-md col-lg">
+                                                            Alto
+                                                        </div>
+                                                        <div class="col-sm-12 col-12 col-md col-lg">
+                                                            <input type="text" class="w-100 text-center form-control form-control-sm" id="displayDM" value="0" readonly disabled>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col">
+                                                    <a class="m-0 small font-weight-bold" data-toggle="tooltip" data-placement="top" title="Quanto  de  atividade  física  a  tarefa  exige  (ex.:  empurrando,  puxando, virando, controlando, mexendo)? A  tarefa  é  leve,  lenta,  facilmente  realizada  e  tranqüila?  (indica  LIMITE BAIXO na escala); Ou é pesada, rápida, vigorosa e agitada? (indica LIMITE ALTO na escala).">
+                                                        Demanda Física
+                                                    </a>
+                                                    <hr class="mt-1" />
+                                                    <div class="row">
+                                                        <div class="col-sm-12 col-12 col-md col-lg">
+                                                            Baixo
+                                                        </div>
+                                                        <div class="col-sm-12 col-12 col-md col-lg">
+                                                            <input id="valorDF" type="range" name="vol" value="0" min="0" max="100" step="5" oninput="displayDF.value=value" onchange="displayDF.value=value">
+                                                        </div>
+                                                        <div class="col-sm-12 col-12 col-md col-lg">
+                                                            Alto
+                                                        </div>
+                                                        <div class="col-sm-12 col-12 col-md col-lg">
+                                                            <input type="text" class="w-100 text-center form-control form-control-sm" id="displayDF" value="0" readonly disabled>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row mt-4">
+                                                <div class="col">
+                                                    <a class="m-0 small font-weight-bold" data-toggle="tooltip" data-placement="top" title="Quanto de pressão de tempo você sofreu com relação ao tamanho da tarefa pelo  tempo  para  executa-la?  Quanta  pressão  você  sentiu  com  relação  ao ritmo cobrado para a execução dessa tarefa? (ex.; proporção entre o horário de  trabalho  e  o  tamanho  ou  complexidade  da  tarefa, prazo  do  serviço encomendado) O  ritmo  de  trabalho  é  lento  e  tranqüilo?  (indica  LIMITE  BAIXO  na  escala); Ou é frenético? (indica LIMITE ALTO na escala)">
+                                                        Demanda Temporal
+                                                    </a>
+                                                    <hr class="mt-1" />
+                                                    <div class="row">
+                                                        <div class="col-sm-12 col-12 col-md col-lg">
+                                                            Boa
+                                                        </div>
+                                                        <div class="col-sm-12 col-12 col-md col-lg">
+                                                            <input id="valorDT" type="range" name="vol" value="0" min="0" max="100" step="5" oninput="displayDT.value=value" onchange="displayDT.value=value">
+                                                        </div>
+                                                        <div class="col-sm-12 col-12 col-md col-lg">
+                                                            Ruim
+                                                        </div>
+                                                        <div class="col">
+                                                            <input type="text" class="w-100 text-center form-control form-control-sm" id="displayDT" value="0" readonly disabled>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col">
+                                                    <a class="m-0 small font-weight-bold" data-toggle="tooltip" data-placement="top" title="Quanto sucesso você acha que tem realizando as metas da sua tarefa? (ex.: satisfação, reconhecimento) Você  fica  muito  satisfeito  e  é  elogiado  quando  você  alcança  as  metas? (indica  LIMITE  ALTO  na  escala);  Ou  você  fica  pouco satisfeito  e  quase ninguém nota o seu trabalho? (indica LIMITE BAIXO na escala)">
+                                                        Performace
+                                                    </a>
+                                                    <hr class="mt-1" />
+                                                    <div class="row">
+                                                        <div class="col-sm-12 col-12 col-md col-lg">
+                                                            Baixo
+                                                        </div>
+                                                        <div class="col">
+                                                            <input id="valorPE" type="range" name="vol" value="0" min="0" max="100" step="5" oninput="displayPE.value=value" onchange="displayPE.value=value">
+                                                        </div>
+                                                        <div class="col-sm-12 col-12 col-md col-lg">
+                                                            Alto
+                                                        </div>
+                                                        <div class="col-sm-12 col-12 col-md col-lg">
+                                                            <input type="text" class="w-100 text-center form-control form-control-sm" id="displayPE" value="0" readonly disabled>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row mt-4">
+                                                <div class="col">
+                                                    <label class="m-0 small font-weight-bold" data-toggle="tooltip" data-placement="top" title="Que  quantidade  de  esforço  total  (mental+físico)  você  precisou  aplicar  para realizar sua tarefa? (ex.: concentração, força muscular, raciocínio, destreza). Para  que  a  execução  da  sua  tarefa  seja  desempenhada  com  sucesso  é necessária concentração superficial, força muscular leve, raciocínio simples, pouca  destreza?  (indica  LIMITE  BAIXO  na  escala?;  Ou  é  necessária concentração profunda, força muscular intensa, raciocínio complexo e muita destreza? (indica LIMITE ALTO)">
+                                                        Esforço
+                                                    </label>
+                                                    <hr class="mt-1" />
+                                                    <div class="row">
+                                                        <div class="col-sm-12 col-12 col-md col-lg">
+                                                            Baixo
+                                                        </div>
+                                                        <div class="col">
+                                                            <input id="valorES" type="range" name="vol" value="0" min="0" max="100" step="5" oninput="displayES.value=value" onchange="displayES.value=value">
+                                                        </div>
+                                                        <div class="col-sm-12 col-12 col-md col-lg">
+                                                            Alto
+                                                        </div>
+                                                        <div class="col-sm-12 col-12 col-md col-lg">
+                                                            <input type="text" class="w-100 text-center form-control form-control-sm" id="displayES" value="0" readonly disabled>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col">
+                                                    <a class="m-0 small font-weight-bold" data-toggle="tooltip" data-placement="top" title="Quanto sofrimento você acha que tem realizando  as  metas  da  sua  tarefa? (ex.: insegurança, desencorajamento, irritação, desconforto e estresse). Você  se  sente  seguro,  contente  e  tranqüilo  quando  realiza  a  sua  tarefa? (indica    LIMITE    BAIXO    na    escala);    Ou    pelo    contrário,    inseguro, desencorajado, irritado, incomodado e estressado? (indica LIMITE ALTO na escala)">
+                                                        Frustração
+                                                    </a>
+                                                    <hr class="mt-1" />
+                                                    <div class="row">
+                                                        <div class="col-sm-12 col-12 col-md col-lg">
+                                                            Baixo
+                                                        </div>
+                                                        <div class="col-sm-12 col-12 col-md col-lg">
+                                                            <input id="valorFR" type="range" name="vol" value="0" min="0" max="100" step="5" oninput="displayFR.value=value" onchange="displayFR.value=value">
+                                                        </div>
+                                                        <div class="col-sm-12 col-12 col-md col-lg">
+                                                            Alto
+                                                        </div>
+                                                        <div class="col-sm-12 col-12 col-md col-lg">
+                                                            <input type="text" class="w-100 text-center form-control form-control-sm" id="displayFR" value="0" readonly disabled>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <h5 class="mb-0 mt-5">Comparação de Pares</h5>
+                                            <hr class="mt-1" />
+
+                                            <div class="row mt-3">
+                                                <div class="col-sm-12 col-12 col-md col-lg mt-1">
+                                                    <button id="btn_1_Comp" class="btn btn-sm btn-secondary text-light" style="width: 135px;" onclick="RegistraComparacao(1,2,5)">Esforço</button>
+                                                    <button id="btn_2_Comp" class="btn btn-sm btn-secondary text-light" style="width: 135px;" onclick="RegistraComparacao(1,2,4)">Performace</button>
+                                                </div>
+                                                <div class="col-sm-12 col-12 col-md col-lg mt-1">
+                                                    <button id="btn_3_Comp" class="btn btn-sm btn-secondary text-light" style="width: 135px;" onclick="RegistraComparacao(3,4,6)">Frustação</button>
+                                                    <button id="btn_4_Comp" class="btn btn-sm btn-secondary text-light" style="width: 135px;" onclick="RegistraComparacao(3,4,1)">Demanda Mental</button>
+                                                </div>
+                                                <div class="col-sm-12 col-12 col-md col-lg mt-1">
+                                                    <button id="btn_5_Comp" class="btn btn-sm btn-secondary text-light" style="width: 135px;" onclick="RegistraComparacao(5,6,2)">Demanda Física</button>
+                                                    <button id="btn_6_Comp" class="btn btn-sm btn-secondary text-light" style="width: 135px;" onclick="RegistraComparacao(5,6,3)">Demanda Temporal</button>
+                                                </div>
+                                            </div>
+
+                                            <div class="row mt-3">
+                                                <div class="col-sm-12 col-12 col-md col-lg mt-1">
+                                                    <button id="btn_7_Comp" class="btn btn-sm btn-secondary text-light" style="width: 135px;" onclick="RegistraComparacao(7,8,4)">Performace</button>
+                                                    <button id="btn_8_Comp" class="btn btn-sm btn-secondary text-light" style="width: 135px;" onclick="RegistraComparacao(7,8,1)">Demanda Mental</button>
+                                                </div>
+                                                <div class="col-sm-12 col-12 col-md col-lg mt-1">
+                                                    <button id="btn_9_Comp" class="btn btn-sm btn-secondary text-light" style="width: 135px;" onclick="RegistraComparacao(9,10,1)">Demanda Mental</button>
+                                                    <button id="btn_10_Comp" class="btn btn-sm btn-secondary text-light" style="width: 135px;" onclick="RegistraComparacao(9,10,5)">Esforço</button>
+                                                </div>
+                                                <div class="col-sm-12 col-12 col-md col-lg mt-1">
+                                                    <button id="btn_11_Comp" class="btn btn-sm btn-secondary text-light" style="width: 135px;" onclick="RegistraComparacao(11,12,1)">Demanda Mental</button>
+                                                    <button id="btn_12_Comp" class="btn btn-sm btn-secondary text-light" style="width: 135px;" onclick="RegistraComparacao(11,12,2)">Demanda Física</button>
+                                                </div>
+                                            </div>
+
+                                            <div class="row mt-3">
+                                                <div class="col-sm-12 col-12 col-md col-lg mt-1">
+                                                    <button id="btn_13_Comp" class="btn btn-sm btn-secondary text-light" style="width: 135px;" onclick="RegistraComparacao(13,14,5)">Esforço</button>
+                                                    <button id="btn_14_Comp" class="btn btn-sm btn-secondary text-light" style="width: 135px;" onclick="RegistraComparacao(13,14,2)">Demanda Física</button>
+                                                </div>
+                                                <div class="col-sm-12 col-12 col-md col-lg mt-1">
+                                                    <button id="btn_15_Comp" class="btn btn-sm btn-secondary text-light" style="width: 135px;" onclick="RegistraComparacao(15,16,3)">Demanda Temporal</button>
+                                                    <button id="btn_16_Comp" class="btn btn-sm btn-secondary text-light" style="width: 135px;" onclick="RegistraComparacao(15,16,6)">Frustração</button>
+                                                </div>
+                                                <div class="col-sm-12 col-12 col-md col-lg mt-1">
+                                                    <button id="btn_17_Comp" class="btn btn-sm btn-secondary text-light" style="width: 135px;" onclick="RegistraComparacao(17,18,4)">Performace</button>
+                                                    <button id="btn_18_Comp" class="btn btn-sm btn-secondary text-light" style="width: 135px;" onclick="RegistraComparacao(17,18,6)">Frustração</button>
+                                                </div>
+                                            </div>
+
+                                            <div class="row mt-3">
+                                                <div class="col-sm-12 col-12 col-md col-lg mt-1">
+                                                    <button id="btn_19_Comp" class="btn btn-sm btn-secondary text-light" style="width: 135px;" onclick="RegistraComparacao(19,20,3)">Demanda Temporal</button>
+                                                    <button id="btn_20_Comp" class="btn btn-sm btn-secondary text-light" style="width: 135px;" onclick="RegistraComparacao(19,20,1)">Demanda Mental</button>
+                                                </div>
+                                                <div class="col-sm-12 col-12 col-md col-lg mt-1">
+                                                    <button id="btn_21_Comp" class="btn btn-sm btn-secondary text-light" style="width: 135px;" onclick="RegistraComparacao(21,22,3)">Demanda Temporal</button>
+                                                    <button id="btn_22_Comp" class="btn btn-sm btn-secondary text-light" style="width: 135px;" onclick="RegistraComparacao(21,22,5)">Esforço</button>
+                                                </div>
+                                                <div class="col-sm-12 col-12 col-md col-lg mt-1">
+                                                    <button id="btn_23_Comp" class="btn btn-sm btn-secondary text-light" style="width: 135px;" onclick="RegistraComparacao(23,24,4)">Performace</button>
+                                                    <button id="btn_24_Comp" class="btn btn-sm btn-secondary text-light" style="width: 135px;" onclick="RegistraComparacao(23,24,3)">Demanda Temporal</button>
+                                                </div>
+                                            </div>
+
+                                            <div class="row mt-3">
+                                                <div class="col-sm-12 col-12 col-md col-lg mt-1">
+                                                    <button id="btn_25_Comp" class="btn btn-sm btn-secondary text-light" style="width: 135px;" onclick="RegistraComparacao(25,26,2)">Demanda Física</button>
+                                                    <button id="btn_26_Comp" class="btn btn-sm btn-secondary text-light" style="width: 135px;" onclick="RegistraComparacao(25,26,6)">Frustração</button>
+                                                </div>
+                                                <div class="col-sm-12 col-12 col-md col-lg mt-1">
+                                                    <button id="btn_27_Comp" class="btn btn-sm btn-secondary text-light" style="width: 135px;" onclick="RegistraComparacao(27,28,2)">Demanda Física</button>
+                                                    <button id="btn_28_Comp" class="btn btn-sm btn-secondary text-light" style="width: 135px;" onclick="RegistraComparacao(27,28,4)">Performace</button>
+                                                </div>
+                                                <div class="col-sm-12 col-12 col-md col-lg mt-1">
+                                                    <button id="btn_29_Comp" class="btn btn-sm btn-secondary text-light" style="width: 135px;" onclick="RegistraComparacao(29,30,5)">Esforço</button>
+                                                    <button id="btn_30_Comp" class="btn btn-sm btn-secondary text-light" style="width: 135px;" onclick="RegistraComparacao(29,30,6)">Frustração</button>
+                                                </div>
+                                            </div>
+
+                                            <div class="row mt-5">
+                                                <div class="col-sm-12 col-12 col-md col-lg mt-1">
+
+                                                </div>
+                                                <div class="col-sm col col-md col-lg mt-1 text-right ml-0">
+                                                    <a class="btn btn-sm btn-warning text-light" onclick="AbilitaBotoesComparacao()">Abilitar Botões</a>
+                                                    <button id="btnInformaAnaliise" class="btn btn-sm btn-success text-light" onclick="InformarAnaliseCargaMental()">Informar Análise</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <p>
+                                    <div class="alert alert-dark" role="alert" data-toggle="collapse" href="#MenuAnaliseAmbiete" aria-expanded="false" aria-controls="MenuAnaliseAmbiete">
+                                        <i class="fas fa-home mr-2"></i> Análise Ambiente - LVE
+                                    </div>
+                                </p>
+                                <div class='collapse' id="MenuAnaliseAmbiete">
+                                    <div class="card card-body">
+                                        <p class="mb-0 mt-0 small">
+                                            <div class="row">
+                                                <div class="col-sm-12 col-12 col-md-10 col-lg-10">
+                                                    <div class="alert alert-dark small mb-0 pt-2 pb-2 font-weight-bold mt-1" style="font-size:11px;" role="alert" data-toggle="collapse" href="#CheckListUm" aria-expanded="false" aria-controls="MenuAnaliseAmbiete">
+                                                        CHECKLIST PARA AVALIAÇÃO DAS CONDIÇÕES BIOMECÂNICAS DO POSTO DE TRABALHO
+                                                    </div>
+                                                </div>
+                                                <div class="col-12 col-sm-12 col-md col-lg">
+                                                    <button class="btn btn-sm btn-primary w-100 mt-1" style="height: 33px;" data-toggle="modal" data-target="#ModelQuestionario1">Íniciar Check-List</button>
+                                                </div>
+                                            </div>
+                                        </p>
+                                        <p class="mb-0 mt-0 small">
+                                            <div class="row">
+                                                <div class="col-sm-12 col-12 col-md-10 col-lg-10">
+                                                    <div class="alert alert-dark small mb-0 pt-2 pb-2 font-weight-bold mt-1" style="font-size:11px;" role="alert" data-toggle="collapse" href="#CheckListUm" aria-expanded="false" aria-controls="MenuAnaliseAmbiete">
+                                                        CHECKLIST PARA AVALIAÇÃO DE CONDIÇÕES ERGONÔMICAS GERAIS DO AMBIENTE DE TRABALHO
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm col col-md col-lg">
+                                                    <button class="btn btn-sm btn-primary w-100 mt-1" style="height: 33px;" data-toggle="modal" data-target="#ModelQuestionario2">Íniciar Check-List</button>
+                                                </div>
+                                            </div>
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div><div id="AreaAnalisesOWASInformada"></div></div>
+                                <div><div id="AreaAnalisesNASATLXInformada"></div></div>
+
+                                <div id="RetornoLancamento"></div>
+
+                                <div class="form-group mt-5">
+                                    <a asp-action="Index" class="btn btn-primary">Voltar</a>
+                                    <input type="button" value="Lançar Boletim" class="btn btn-success" onclick="PreCadastro()" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="ModalPreCadastro">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="">Revisão do Boletim</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="">
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <spam class="text-danger font-weight-bold small">Revisão: Antes de confirmar o Lançamento é recomendado revivar os dados abaixo , pois não é permitido a alteração do Boletim posteriormente:</spam>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="card p-2">
+
+                    <div class="row p-2">
+                        <div class="col small">
+                            <span class="font-weight-bold">Data:</span> <span id="rData"></span>
+                        </div>
+                        <div class="col small">
+                            <span class="font-weight-bold">Nome do Avaliador:</span> <span id="rNomeAvaliador"></span>
+                        </div>
+                    </div>
+
+                    <div class="row p-2">
+                        <div class="col small">
+                            <span class="font-weight-bold">Setor:</span> <span id="rSetor"></span>
+                        </div>
+                        <div class="col small">
+                            <span class="font-weight-bold">Hora Ínicio:</span> <span id="rInicio"></span>
+                        </div>
+                        <div class="col small">
+                            <span class="font-weight-bold">Hora Termino:</span> <span id="rTermino"></span>
+                        </div>
+                        <div class="col small">
+                            <span class="font-weight-bold">Tempo Gasto:</span> <span id="rGasto"></span>
+                        </div>
+                    </div>
+
+                    <div class="row p-2">
+                        <div class="col small">
+                            <span class="font-weight-bold">Local:</span> <span id="rLocal"></span>
+                        </div>
+                        <div class="col small">
+                            <span class="font-weight-bold">Atividade:</span> <span id="rAtividade"></span>
+                        </div>
+                    </div>
+
+                    <div class="row p-2">
+                        <div class="col small">
+                            <span class="font-weight-bold">Descrição:</span> <span id="rDescricao"></span>
+                        </div>
+                    </div>
+
+                    <div class="row mt-3">
+                        <div class="col" id="rAnaliseOWAS">
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col" id="rAnaliseNASATLX">
+
+                        </div>
+                    </div>
+                    <div class="row small mt-1">
+                        <div class="col">
+                            <div>
+                                <div class="ml-1 mb-0 alert alert-secondary rounded-0 rounded-top" role="alert" data-toggle="collapse" href="#CheckListResult" aria-expanded="false" aria-controls="CheckListResult">
+                                    CheckList Respondidos
+                                </div>
+                                <div class="collapse ml-1 mt-0" id="CheckListResult">
+                                    <div class="card card-body rounded-0 border-top-0">
+
+                                        <div class="row">
+                                            <div class="col-11 font-weight-bold small">
+                                                CHECKLIST PARA AVALIAÇÃO DAS CONDIÇÕES BIOMECÂNICAS DO POSTO DE TRABALHO
+                                            </div>
+                                            <div class="col small font-weight-bold">
+                                                <div id="checkList1Confirma">Sim</div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-11 font-weight-bold small">
+                                                CHECKLIST PARA AVALIAÇÃO DE CONDIÇÕES ERGONÔMICAS GERAIS DO AMBIENTE DE TRABALHO
+                                            </div>
+                                            <div class="col small font-weight-bold">
+                                                <div id="checkList2Confirma">Sim</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-danger btn-sm text-light" data-dismiss="modal">Cancelar</a>
+                <a class="btn btn-success btn-sm text-light" onClick="LancarBoletim()">Confirmar o Lançamento</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="ModalRetornoBoletim" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTitle">Lançamento do Boletim</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="modalBody">
+
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-info btn-sm" asp-action="Index">Voltar</a>
+                <a class="btn btn-success btn-sm text-light" onClick='parent.location="javascript:location.reload()"'>Novo Boletim</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="CadastrarNovaAtividade" tabindex="-1" role="dialog" aria-labelledby="CadastrarNovaAtividade" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Nova Atividade</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label class="control-label mb-0 small">Nome</label>
+                            <input type="text" class="form-control form-control-sm" id="NomeAtividade" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label class="control-label mb-0 small">Descrição</label>
+                            <textarea class="form-control form-control-sm" id="DescricaoAtividade"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Fechar</button>
+                <button type="button" class="btn btn-success btn-sm" onclick="CadastroNovaAtividade()">Cadastrar Nova Atividade</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@* Models de CheckList *@
+<div class="modal fade" id="ModelQuestionario1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title" id="">CHECKLIST PARA AVALIAÇÃO SIMPLIFICADA DAS CONDIÇÕES BIOMECÂNICAS DO POSTO DE TRABALHO </h6>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="">
+
+                <div class="row">
+                    <div class="col-3 col-sm-3 col-md-3 col-lg-3">
+                        <div class=" p-1 nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                            <a class="card mb-1 nav-link active btn btn-sm" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-bancada" role="tab" aria-controls="v-pills-bancada" aria-selected="true">Bancada</a>
+                            <a class="card mb-1 nav-link btn btn-sm" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-acoes" role="tab" aria-controls="v-pills-acoes" aria-selected="false">Ações</a>
+                            <a class="card mb-1 nav-link btn btn-sm" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-sentado" role="tab" aria-controls="v-pills-sentado" aria-selected="false">Sentado</a>
+                        </div>
+                    </div>
+                    <div class="col col-sm col-md col-lg">
+                        <div class="tab-content" id="v-pills-tabContent">
+                            <div class="tab-pane fade show active" id="v-pills-bancada" role="tabpanel" aria-labelledby="v-pills-home-tab">
+                                <table class="table table-sm table-bordered">
+                                    <thead class="thead-dark">
+                                        <tr>
+                                            <th class="small text-center" style="width: 80%;">Pergunta</th>
+                                            <th class="small text-center">Resposta</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="small">
+                                                A bancada de trabalho/máquIna está localizada em altura correta
+                                                (trabalho pesado: ao nível do púbis / trabalho moderado: na altura
+                                                do cotovelo / trabalho leve: a 30 cm dos olhos)?
+                                            </td>
+                                            <td class="align-middle" id="grupo1pergunta1">
+                                                <select class="custom-select custom-select-sm">
+                                                    <option selected>Escolha</option>
+                                                    <option value="0">Não</option>
+                                                    <option value="1">Sim</option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="small">
+                                                A bancada ou máquina tem regulagem de altura deforma a possibilitar
+                                                ao trabalhador adequar a altura do posto de trabalho á sua?
+                                            </td>
+                                            <td class="align-middle" id="grupo1pergunta2">
+                                                <select class="custom-select custom-select-sm">
+                                                    <option selected>Escolha</option>
+                                                    <option value="0">Não</option>
+                                                    <option value="1">Sim</option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="small">
+                                                Os objetos e materiais de uso freqüente estão dentro da área de alcance?
+                                            </td>
+                                            <td class="align-middle" id="grupo1pergunta3">
+                                                <select class="custom-select custom-select-sm">
+                                                    <option selected>Escolha</option>
+                                                    <option value="0">Não</option>
+                                                    <option value="1">Sim</option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="tab-pane fade" id="v-pills-acoes" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+                                <table class="table table-sm table-bordered">
+                                    <thead class="thead-dark">
+                                        <tr>
+                                            <th class="small text-center" style="width: 80%;">Pergunta</th>
+                                            <th class="small text-center">Resposta</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="small">
+                                                Tem-se que sustentar pesos com os membros superiores para evitar seu
+                                                deslocamento seja na vertical seja na horizontal?
+                                            </td>
+                                            <td class="align-middle" id="grupo1pergunta4">
+                                                <select class="custom-select custom-select-sm">
+                                                    <option selected>Escolha</option>
+                                                    <option value="1">Não</option>
+                                                    <option value="0">Sim</option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="small">
+                                                Tem-se que apertar pedais estando de pé, em freqüência maior que 3 vezes por minuto?
+                                            </td>
+                                            <td class="align-middle" id="grupo1pergunta5">
+                                                <select class="custom-select custom-select-sm">
+                                                    <option selected>Escolha</option>
+                                                    <option value="1">Não</option>
+                                                    <option value="0">Sim</option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="small">
+                                                O trabalho exige a elevação dos braços acima do nível dos ombros?
+                                            </td>
+                                            <td class="align-middle" id="grupo1pergunta6">
+                                                <select class="custom-select custom-select-sm">
+                                                    <option selected>Escolha</option>
+                                                    <option value="1">Não</option>
+                                                    <option value="0">Sim</option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="small">O trabalho exige ficar parado na posição de pé durante grande parte do tempo (mais que 60%)?</td>
+                                            <td class="align-middle" id="grupo1pergunta7">
+                                                <select class="custom-select custom-select-sm">
+                                                    <option selected>Escolha</option>
+                                                    <option value="1">Não</option>
+                                                    <option value="0">Sim</option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="small"> Os membros superiores têm que sustentar pesos? </td>
+                                            <td class="align-middle" id="grupo1pergunta8">
+                                                <select class="custom-select custom-select-sm">
+                                                    <option selected>Escolha</option>
+                                                    <option value="1">Não</option>
+                                                    <option value="0">Sim</option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="small">  Ficar-se de pé, parado, durante a maior parte da jornada?  </td>
+                                            <td class="align-middle" id="grupo1pergunta9">
+                                                <select class="custom-select custom-select-sm">
+                                                    <option selected>Escolha</option>
+                                                    <option value="1">Não</option>
+                                                    <option value="0">Sim</option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="small">
+                                                Existem pequenas contrações estáticas, porém por muito tempo (por exemplo, pescoço excessivamente
+                                                estendido, braços suspensos, sustentação dos antebraços pelos braços, falta de apoio para os antebraços)?
+                                            </td>
+                                            <td class="align-middle" id="grupo1pergunta10">
+                                                <select class="custom-select custom-select-sm">
+                                                    <option selected>Escolha</option>
+                                                    <option value="1">Não</option>
+                                                    <option value="0">Sim</option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="tab-pane fade" id="v-pills-sentado" role="tabpanel" aria-labelledby="v-pills-messages-tab">
+                                <table class="table table-sm table-bordered">
+                                    <thead class="thead-dark">
+                                        <tr>
+                                            <th class="small text-center" style="width: 80%;">Pergunta</th>
+                                            <th class="small text-center">Resposta</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="small">
+                                                No caso de se trabalhar sentado, há espaço suficiente para as pernas?
+                                            </td>
+                                            <td class="align-middle" id="grupo1pergunta11">
+                                                <select class="custom-select custom-select-sm">
+                                                    <option selected>Escolha</option>
+                                                    <option value="0">Não</option>
+                                                    <option value="1">Sim</option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="small">
+                                                A cadeira tem inclinação correta, compatível com o trabalho executado?
+                                            </td>
+                                            <td class="align-middle" id="grupo1pergunta12">
+                                                <select class="custom-select custom-select-sm">
+                                                    <option selected>Escolha</option>
+                                                    <option value="0">Não</option>
+                                                    <option value="1">Sim</option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="small">
+                                                O corpo trabalha no eixo vertical natural, ou em ângulo de 100 graus entre
+                                                as coxas e o tronco (no caso de trabalho sentado?)
+                                            </td>
+                                            <td class="align-middle" id="grupo1pergunta13">
+                                                <select class="custom-select custom-select-sm">
+                                                    <option selected>Escolha</option>
+                                                    <option value="0">Não</option>
+                                                    <option value="1">Sim</option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="small"> Estando sentado, fica-se em posição estática? </td>
+                                            <td class="align-middle" id="grupo1pergunta14">
+                                                <select class="custom-select custom-select-sm">
+                                                    <option selected>Escolha</option>
+                                                    <option value="1">Não</option>
+                                                    <option value="0">Sim</option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="AreaGrupo1">
+
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button id="btnCorrigirGrupo1" class="btn btn-warning btn-sm text-light" onclick="CorrigirCheckList('1')" disabled>Corrigir</button>
+                <a id="btnFecharGrupo1" class="btn btn-danger btn-sm text-light" data-dismiss="modal">Fechar</a>
+                <button id="btnConfirmaGrupo1" class="btn btn-success btn-sm text-light" onclick="ConfirmaCheckList('1')">Confirmar o CheckList</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="ModelQuestionario2">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title text-center" id="">
+                    CHECKLIST PARA AVALIAÇÃO DE CONDIÇÕES ERGONÔMICAS GERAIS DO AMBIENTE
+                </h6>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-4 col-sm-4 col-md-3 col-lg-3">
+                        <div class=" p-1 nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                            <a class="card mb-1 nav-link active btn btn-sm w-100" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-p1" role="tab" aria-controls="v-pills-p1" aria-selected="true">Parte 1</a>
+                            <a class="card mb-1 nav-link btn btn-sm w-100" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-p2" role="tab" aria-controls="v-pills-p2" aria-selected="false">Parte 2</a>
+                            <a class="card mb-1 nav-link btn btn-sm w-100" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-p3" role="tab" aria-controls="v-pills-p3" aria-selected="false">Parte 3</a>
+                        </div>
+                    </div>
+                    <div class="col-10 col-sm col-md col-lg">
+                        <div class="tab-content" id="v-pills-tabContent">
+                            <div class="tab-pane fade show active" id="v-pills-p1" role="tabpanel" aria-labelledby="v-pills-home-tab">
+
+                                <table class="table table-sm table-bordered">
+                                    <thead class="thead-dark">
+                                        <tr>
+                                            <th class="small text-center" style="width: 80%;">Pergunta</th>
+                                            <th class="small text-center">Resposta</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="small">
+                                                Exigências de trabalho excessivamente complexas em relação à habilitação dos funcionários?
+                                            </td>
+                                            <td class="align-middle" id="grupo2pergunta1">
+                                                <select class="custom-select custom-select-sm">
+                                                    <option selected>Escolha</option>
+                                                    <option value="1">Não</option>
+                                                    <option value="0">Sim</option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="small">
+                                                Fatores externos que tornam o trabalho mais pesado (calor, barulho, odor, vibração)
+                                            </td>
+                                            <td class="align-middle" id="grupo2pergunta2">
+                                                <select class="custom-select custom-select-sm">
+                                                    <option selected>Escolha</option>
+                                                    <option value="1">Não</option>
+                                                    <option value="0">Sim</option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="small">
+                                                Outros fatores de organização do trabalho que o tornam mais pesado (ausência de pausas, trabalho contra o relógio)
+                                            </td>
+                                            <td class="align-middle" id="grupo2pergunta3">
+                                                <select class="custom-select custom-select-sm">
+                                                    <option selected>Escolha</option>
+                                                    <option value="1">Não</option>
+                                                    <option value="0">Sim</option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="small">
+                                                A altura do posto de trabalho está correta? (precisão: 30 cm dos olhos / normal: altura do cotovelo)
+                                            </td>
+                                            <td class="align-middle" id="grupo2pergunta4">
+                                                <select class="custom-select custom-select-sm">
+                                                    <option selected>Escolha</option>
+                                                    <option value="0">Não</option>
+                                                    <option value="1">Sim</option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="small">A área mínima por pessoa (4 a 6 m2) é observada?</td>
+                                            <td class="align-middle" id="grupo2pergunta5">
+                                                <select class="custom-select custom-select-sm">
+                                                    <option selected>Escolha</option>
+                                                    <option value="0">Não</option>
+                                                    <option value="1">Sim</option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="small">Existe espaço suficiente para movimentação?</td>
+                                            <td class="align-middle" id="grupo2pergunta6">
+                                                <select class="custom-select custom-select-sm">
+                                                    <option selected>Escolha</option>
+                                                    <option value="0">Não</option>
+                                                    <option value="1">Sim</option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="small">
+                                                A temperatura efetiva do ambiente está entre 20º e 23º C?
+                                            </td>
+                                            <td class="align-middle" id="grupo2pergunta7">
+                                                <select class="custom-select custom-select-sm">
+                                                    <option selected>Escolha</option>
+                                                    <option value="0">Não</option>
+                                                    <option value="1">Sim</option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="small">
+                                                Existe alguma forma de calor radiante que contribui para o desconforto térmico?
+                                            </td>
+                                            <td class="align-middle" id="grupo2pergunta8">
+                                                <select class="custom-select custom-select-sm">
+                                                    <option selected>Escolha</option>
+                                                    <option value="1">Não</option>
+                                                    <option value="0">Sim</option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                            </div>
+                            <div class="tab-pane fade" id="v-pills-p2" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+
+                                <table class="table table-sm table-bordered">
+                                    <thead class="thead-dark">
+                                        <tr>
+                                            <th class="small text-center" style="width: 80%;">Pergunta</th>
+                                            <th class="small text-center">Resposta</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="small">
+                                                A circulação de ar ocorre de forma suficiente?
+                                            </td>
+                                            <td class="align-middle" id="grupo2pergunta9">
+                                                <select class="custom-select custom-select-sm">
+                                                    <option selected>Escolha</option>
+                                                    <option value="0">Não</option>
+                                                    <option value="1">Sim</option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="small">
+                                                Iluminação suficiente de dia?
+                                            </td>
+                                            <td class="align-middle" id="grupo2pergunta10">
+                                                <select class="custom-select custom-select-sm">
+                                                    <option selected>Escolha</option>
+                                                    <option value="0">Não</option>
+                                                    <option value="1">Sim</option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="small">
+                                                Iluminação suficiente á noite?
+                                            </td>
+                                            <td class="align-middle" id="grupo2pergunta11">
+                                                <select class="custom-select custom-select-sm">
+                                                    <option selected>Escolha</option>
+                                                    <option value="0">Não</option>
+                                                    <option value="1">Sim</option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="small">
+                                                Objetos ou letras podem ser vistos ou lidos de forma nítida uma distância de 30 cm dos olhos?
+                                            </td>
+                                            <td class="align-middle" id="grupo2pergunta12">
+                                                <select class="custom-select custom-select-sm">
+                                                    <option selected>Escolha</option>
+                                                    <option value="0">Não</option>
+                                                    <option value="1">Sim</option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="small">Há sombras comprometendo a visibilidade? </td>
+                                            <td class="align-middle" id="grupo2pergunta13">
+                                                <select class="custom-select custom-select-sm">
+                                                    <option selected>Escolha</option>
+                                                    <option value="1">Não</option>
+                                                    <option value="0">Sim</option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="small">As mesas estão em ângulo correto em relação às janelas (perpendiculares)?</td>
+                                            <td class="align-middle" id="grupo2pergunta14">
+                                                <select class="custom-select custom-select-sm">
+                                                    <option selected>Escolha</option>
+                                                    <option value="0">Não</option>
+                                                    <option value="1">Sim</option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="small">
+                                                Paredes de cor clara, com boa difusão de luz?
+                                            </td>
+                                            <td class="align-middle" id="grupo2pergunta15">
+                                                <select class="custom-select custom-select-sm">
+                                                    <option selected>Escolha</option>
+                                                    <option value="0">Não</option>
+                                                    <option value="1">Sim</option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="small">
+                                                Reflexos de luz na mesa de trabalho?
+                                            </td>
+                                            <td class="align-middle" id="grupo2pergunta16">
+                                                <select class="custom-select custom-select-sm">
+                                                    <option selected>Escolha</option>
+                                                    <option value="1">Não</option>
+                                                    <option value="0">Sim</option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                            </div>
+                            <div class="tab-pane fade" id="v-pills-p3" role="tabpanel" aria-labelledby="v-pills-messages-tab">
+                                <table class="table table-sm table-bordered">
+                                    <thead class="thead-dark">
+                                        <tr>
+                                            <th class="small text-center" style="width: 80%;">Pergunta</th>
+                                            <th class="small text-center">Resposta</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="small">
+                                                Reflexos de luz nos equipamentos?
+                                            </td>
+                                            <td class="align-middle" id="grupo2pergunta17">
+                                                <select class="custom-select custom-select-sm">
+                                                    <option selected>Escolha</option>
+                                                    <option value="1">Não</option>
+                                                    <option value="0">Sim</option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="small">
+                                                Contraste satisfatório dos formulários?
+                                            </td>
+                                            <td class="align-middle" id="grupo2pergunta18">
+                                                <select class="custom-select custom-select-sm">
+                                                    <option selected>Escolha</option>
+                                                    <option value="0">Não</option>
+                                                    <option value="1">Sim</option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="small">
+                                                Iluminação por lâmpadas fluorescentes?
+                                            </td>
+                                            <td class="align-middle" id="grupo2pergunta19">
+                                                <select class="custom-select custom-select-sm">
+                                                    <option selected>Escolha</option>
+                                                    <option value="0">Não</option>
+                                                    <option value="1">Sim</option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="small">
+                                                Lâmpadas queimadas?
+                                            </td>
+                                            <td class="align-middle" id="grupo2pergunta20">
+                                                <select class="custom-select custom-select-sm">
+                                                    <option selected>Escolha</option>
+                                                    <option value="1">Não</option>
+                                                    <option value="0">Sim</option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="small">Claridade das janelas interferindo no campo visual? </td>
+                                            <td class="align-middle" id="grupo2pergunta21">
+                                                <select class="custom-select custom-select-sm">
+                                                    <option selected>Escolha</option>
+                                                    <option value="1">Não</option>
+                                                    <option value="0">Sim</option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="small">lncidência de luz do sol sobre a superfície de trabalho?</td>
+                                            <td class="align-middle" id="grupo2pergunta22">
+                                                <select class="custom-select custom-select-sm">
+                                                    <option selected>Escolha</option>
+                                                    <option value="1">Não</option>
+                                                    <option value="0">Sim</option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="small">
+                                                Há poluição visual?
+                                            </td>
+                                            <td class="align-middle" id="grupo2pergunta23">
+                                                <select class="custom-select custom-select-sm">
+                                                    <option selected>Escolha</option>
+                                                    <option value="1">Não</option>
+                                                    <option value="0">Sim</option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="small">
+                                                Nível de ruído menor que 65 dB?
+                                            </td>
+                                            <td class="align-middle" id="grupo2pergunta24">
+                                                <select class="custom-select custom-select-sm">
+                                                    <option selected>Escolha</option>
+                                                    <option value="0">Não</option>
+                                                    <option value="1">Sim</option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="AreaGrupo2">
+
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button id="btnCorrigirGrupo2" class="btn btn-warning btn-sm text-light" onclick="CorrigirCheckList('2')" disabled>Corrigir</button>
+                <a id="btnFecharGrupo2" class="btn btn-danger btn-sm text-light" data-dismiss="modal">Fechar</a>
+                <button id="btnConfirmaGrupo2" class="btn btn-success btn-sm text-light" onclick="ConfirmaCheckList('2')">Confirmar o CheckList</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+        {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+
+    <script>
+
+        // Variaveis Globais
+        var IndiceCosta = 0
+        var IndiceBraco = 0
+        var IndicePerna = 0
+        var IndiceEsforco = 0
+        var indiceAnalise = 0;
+        var AnaliseAdicionada = 0;
+        var AnaliseRemovida = 0;
+        var AcaoParaTomar = "";
+        var EscalaMental = 0;
+        var EscalaFisica = 0;
+        var EscalaTemporal = 0;
+        var EscalaPerformace = 0;
+        var EscalaEsforco = 0;
+        var EscalaFrustracao = 0;
+        var HoraInicio = "";
+        var HoraTermino = "";
+        var TempoGasto = "";
+        var Comparacoes = 0;
+        var UltimoIndice = 0;
+        var TabelaAnaliseNASATLX = "";
+        var TmpCodigoErg = 0;
+        var TmpCodigoBio = 0;
+
+        // Grupos de Perguntas
+        var Grupo_Um_Sim = 00;
+        var Grupo_Um_Nao = 00;
+
+        // Lista de Analises
+        var ListaAnalisePostura = [];
+        var ListaAnaliseNASATLX;
+
+        window.onload = function () {
+            var Setor = $('#SetorSelecionado').val();
+
+            BuscaLocal(Setor);
+        }
+
+        // Eventos
+        $('#sPosCos').change(function () {
+            IndiceCosta = $(this).val();
+            $('#posCos').text(IndiceCosta);
+            BuscaTipoAnalise();
+        });
+
+        $('#sPosBra').change(function () {
+            IndiceBraco = $(this).val()
+            $('#posBra').text(IndiceBraco);
+            BuscaTipoAnalise();
+        });
+
+        $('#sPosPer').change(function () {
+            IndicePerna = $(this).val()
+            $('#posPer').text(IndicePerna);
+            BuscaTipoAnalise();
+        });
+
+        $('#sPosEsf').change(function () {
+            IndiceEsforco = $(this).val()
+            $('#posEsf').text(IndiceEsforco);
+            BuscaTipoAnalise();
+        });
+
+        function ConfirmaCheckList(GrupoPergunta) {
+
+            if (GrupoPergunta === '1') {
+                var Zero = 0;
+                var Um = 0;
+
+                for (var i = 1; i < 15; i++) {
+
+                    if (($("#grupo1pergunta" + i + " option:selected").text()) === "Escolha") {
+                        alert("Ops! Acabou Esquecendo de Responder algum item do CheckList ! Para continuar responda-o.");
+                        Um = 0;
+                        Zero = 0;
+                        return;
+                    }
+
+                    if (($("#grupo1pergunta" + i + " option:selected").val()) === "1") {
+                        Um++;
+                    }
+                    else (($("#grupo1pergunta" + i + " option:selected").val()) === "0")
+                    {
+                        Zero++;
+                    }
+
+                }
+
+                Dados = {
+                    TipoCheckList: GrupoPergunta,
+                    Questao01: $("#grupo1pergunta1 option:selected").val(),
+                    Questao02: $("#grupo1pergunta2 option:selected").val(),
+                    Questao03: $("#grupo1pergunta3 option:selected").val(),
+                    Questao04: $("#grupo1pergunta4 option:selected").val(),
+                    Questao05: $("#grupo1pergunta5 option:selected").val(),
+                    Questao06: $("#grupo1pergunta6 option:selected").val(),
+                    Questao07: $("#grupo1pergunta7 option:selected").val(),
+                    Questao08: $("#grupo1pergunta8 option:selected").val(),
+                    Questao09: $("#grupo1pergunta9 option:selected").val(),
+                    Questao10: $("#grupo1pergunta10 option:selected").val(),
+                    Questao11: $("#grupo1pergunta11 option:selected").val(),
+                    Questao12: $("#grupo1pergunta12 option:selected").val(),
+                    Questao13: $("#grupo1pergunta13 option:selected").val(),
+                    Questao14: $("#grupo1pergunta14 option:selected").val()
+                }
+
+                TmpCheckList(Dados, GrupoPergunta);
+
+            } else if (GrupoPergunta === '2') {
+                var Zero = 0;
+                var Um = 0;
+
+                for (var i = 1; i < 15; i++) {
+
+                    if (($("#grupo2pergunta" + i + " option:selected").text()) === "Escolha") {
+                        alert("Ops! Acabou Esquecendo de Responder algum item do CheckList ! Para continuar responda-o.");
+                        Um = 0;
+                        Zero = 0;
+                        return;
+                    }
+
+                    if (($("#grupo1pergunta" + i + " option:selected").val()) === "1") {
+                        Um++;
+                    }
+                    else (($("#grupo1pergunta" + i + " option:selected").val()) === "0")
+                    {
+                        Zero++;
+                    }
+
+                }
+
+                Dados = {
+                    TipoCheckList: GrupoPergunta,
+                    Questao01: $("#grupo2pergunta1 option:selected").val(),
+                    Questao02: $("#grupo2pergunta2 option:selected").val(),
+                    Questao03: $("#grupo2pergunta3 option:selected").val(),
+                    Questao04: $("#grupo2pergunta4 option:selected").val(),
+                    Questao05: $("#grupo2pergunta5 option:selected").val(),
+                    Questao06: $("#grupo2pergunta6 option:selected").val(),
+                    Questao07: $("#grupo2pergunta7 option:selected").val(),
+                    Questao08: $("#grupo2pergunta8 option:selected").val(),
+                    Questao09: $("#grupo2pergunta9 option:selected").val(),
+                    Questao10: $("#grupo2pergunta10 option:selected").val(),
+                    Questao11: $("#grupo2pergunta11 option:selected").val(),
+                    Questao12: $("#grupo2pergunta12 option:selected").val(),
+                    Questao13: $("#grupo2pergunta13 option:selected").val(),
+                    Questao14: $("#grupo2pergunta14 option:selected").val(),
+                    Questao15: $("#grupo2pergunta15 option:selected").val(),
+                    Questao16: $("#grupo2pergunta16 option:selected").val(),
+                    Questao17: $("#grupo2pergunta17 option:selected").val(),
+                    Questao18: $("#grupo2pergunta18 option:selected").val(),
+                    Questao19: $("#grupo2pergunta19 option:selected").val(),
+                    Questao20: $("#grupo2pergunta20 option:selected").val(),
+                    Questao21: $("#grupo2pergunta21 option:selected").val(),
+                    Questao22: $("#grupo2pergunta22 option:selected").val(),
+                    Questao23: $("#grupo2pergunta23 option:selected").val(),
+                    Questao24: $("#grupo2pergunta24 option:selected").val(),
+                }
+
+                console.log(Dados)
+
+                TmpCheckList(Dados, GrupoPergunta);
+            }
+        }
+
+        function CorrigirCheckList(GrupoPergunta) {
+            var idcheck = $('#SubAreaGrupoID' + GrupoPergunta).text();
+
+            var SubArea = $('#SubAreaGrupo' + GrupoPergunta);
+            SubArea.remove();
+
+            console.log(idcheck);
+
+            $.ajax({
+                type: "POST",
+                url: "/Boletim/TmpCheckListCorrigir",
+                data: { idcheck },
+                dataType: "html",
+                success: function (response) {
+
+                    console.log(response);
+                    console.log(response.id);
+                    console.log(response.msg);
+
+                    // Desabilitar o Botão
+                    var btnConfirma = "btnConfirmaGrupo" + GrupoPergunta;
+                    document.getElementById(btnConfirma).disabled = false;
+
+                    var btnCorrige = "btnCorrigirGrupo" + GrupoPergunta;
+                    document.getElementById(btnCorrige).disabled = true;
+
+                    var AreaGrupo = $('#AreaGrupo' + GrupoPergunta);
+                    AreaGrupo.append("<div class=\"mb-1 mt-1\"id=\"SubAreaGrupo" + GrupoPergunta + "\"></div>");
+
+                    var SubArea = $('#SubAreaGrupo' + GrupoPergunta);
+                    SubArea.append("<div class=\"alert alert-warning mb-1 mt-1\" role=\"alert\">" +
+                        "CheckList Excluido com Sucesso! <span id=\"SubAreaGrupoID_" + GrupoPergunta + ">" + response.id +
+                        "</span></div>");
+
+                    if (GrupoPergunta === "2") {
+                        TmpCodigoErg = "0";
+                    }
+                    else (GrupoPergunta === "1")
+                    {
+                        TmpCodigoBio = "0";
+                    }
+
+                },
+                failure: function (response) {
+
+                },
+                error: function (response) {
+
+                }
+            });
+        }
+
+        function TmpCheckList(Dados, GrupoPergunta) {
+            console.log(Dados);
+            console.log(GrupoPergunta);
+
+            $.ajax({
+                type: "POST",
+                url: "/Boletim/TmpCheckList",
+                data: Dados,
+                dataType: "html",
+                success: function (response) {
+
+                    console.log(response);
+                    console.log(response[0].id);
+                    console.log(response[0].msg);
+
+                    // Desabilitar o Botão
+                    var btnConfirma = "btnConfirmaGrupo" + GrupoPergunta;
+                    document.getElementById(btnConfirma).disabled = true;
+
+                    var btnCorrige = "btnCorrigirGrupo" + GrupoPergunta;
+                    document.getElementById(btnCorrige).disabled = false;
+
+                    var AreaGrupo = $('#AreaGrupo' + GrupoPergunta);
+                    AreaGrupo.append("<div class=\"mb-1 mt-1\"id=\"SubAreaGrupo" + GrupoPergunta + "\"></div>");
+
+                    var SubArea = $('#SubAreaGrupo' + GrupoPergunta);
+                    SubArea.append("<div class=\"alert alert-success mb-1 mt-1\" role=\"alert\">" +
+                        "CheckList Informado com Sucesso! N° de Registro provisorio: <b id=\"SubAreaGrupoID" + GrupoPergunta + "\">" + response + "</b>" +
+                        "</div >");
+
+                    if (GrupoPergunta === "2") {
+                        TmpCodigoErg = response;
+                        console.log(TmpCodigoErg);
+                    }
+                    else (GrupoPergunta === "1")
+                    {
+                        TmpCodigoBio = response;
+                        console.log(TmpCodigoBio);
+                    }
+
+                },
+                failure: function (response) {
+
+                },
+                error: function (response) {
+
+                }
+            });
+        }
+
+        function ConsomeTempo(Hora, Origem) {
+
+            if (Origem === 1) {
+                HoraInicio = Hora;
+            }
+            else if (Origem === 2) {
+                HoraTermino = Hora;
+            }
+
+            if (HoraInicio !== "" && HoraTermino !== "") {
+
+                $.ajax({
+                    type: "GET",
+                    url: "/Boletim/ConsomeTempo",
+                    data: { HoraInicio, HoraTermino },
+                    dataType: "html",
+                    success: function (response) {
+
+                        TempoGasto = response.substring(2, 6);
+
+                        var Tempo = $('#TempoGastoInput');
+
+                        Tempo.val(TempoGasto);
+                    }
+                });
+
+            }
+        }
+
+        function BuscaTipoAnalise() {
+
+            $.ajax({
+                type: "get",
+                url: "/Boletim/BuscaTipoAnalise",
+                dataType: "json",
+                data: { IndiceCosta, IndicePerna, IndiceEsforco, IndiceBraco },
+                success: function (data) {
+                    //console.log(data);
+
+                    var Area = $('#AreaTipoAnalise');
+                    Area.append("<div id=\"subAreaTipoAnalise\"></div>");
+
+                    var SubArea = $('#subAreaTipoAnalise');
+                    SubArea.remove();
+
+                    Area.append("<div id=\"subAreaTipoAnalise\"></div>");
+                    SubArea = $('#subAreaTipoAnalise');
+
+                    if (data == "Não são necessarias medidas corretivas.") {
+                        SubArea.append("<div class=\"alert alert-success mt-2\" role=\"alert\">" + data + "</div>");
+                        AcaoParaTomar = data;
+                    }
+                    else if (data == "São necessarias correções em um futuro próximo.") {
+                        SubArea.append("<div class=\"alert alert-warning mt-2\" role=\"alert\">" + data + "</div>");
+                        AcaoParaTomar = data;
+                    }
+                    else if (data == "São necessárias correções tão logo quanto possível.") {
+                        SubArea.append("<div class=\"alert alert-warning mt-2\" role=\"alert\">" + data + "</div>");
+                        AcaoParaTomar = data;
+                    }
+                    else if (data == "São necessárias correções imediatas.") {
+                        SubArea.append("<div class=\"alert alert-danger mt-2\" role=\"alert\">" + data + "</div>");
+                        AcaoParaTomar = data;
+                    }
+                    else {
+                        Area.text(data);
+                    }
+                },
+                error: function (xhr, status) {
+                    console.log("Algum erro");
+                }
+            });
+        }
+
+        function LimparInputsPostura() {
+
+            IndiceCosta = 0
+            IndiceBraco = 0
+            IndicePerna = 0
+            IndiceEsforco = 0
+
+            $('#sPosCos').val(0);
+            $('#sPosBra').val(0);
+            $('#sPosPer').val(0);
+            $('#sPosEsf').val(0);
+
+            $('#posCos').text("-");
+            $('#posBra').text("-");
+            $('#posPer').text("-");
+            $('#posEsf').text("-");
+
+            $('#AreaTipoAnalise').text("");
+
+        }
+
+        function LimparInputsCabecalho() {
+            var now = new Date;
+
+            var AreaAnalisesOWASInformada = $('#AreaAnalisesOWASInformada');
+            AreaAnalisesOWASInformada.append();
+
+            var SubArea = $('#SubAreaAnaliseInformada');
+
+            var Area = $('#AreaAnalisesOWASInformada');
+            Area.append("<div id=\"subAreaTipoAnaliseAdd\"></div>");
+
+            var SubArea = $('#subAreaTipoAnaliseAdd');
+            SubArea.remove();
+
+            Area.append("<div id=\"subAreaTipoAnaliseAdd\"></div>");
+            SubArea = $('#subAreaTipoAnaliseAdd');
+
+            $('#CampoData').val(now);
+            $('#DescricaoSelecionado').val("");
+
+            document.getElementById('SetorSelecionado').value = 1;
+            document.getElementById('AtividadeSelecionado').value = 1;
+
+            ListaAnalisePostura.splice(0, ListaAnalisePostura.length);
+        }
+
+        function LimparInputsNasaTLX() {
+            ListaAnaliseNASATLX = 0;
+            $('#valorDM').val(0);
+            $('#valorDF').val(0);
+            $('#valorDT').val(0);
+            $('#valorES').val(0);
+            $('#valorPE').val(0);
+            $('#valorFR').val(0);
+
+            $("#AreaAnalisesNASATLXInformada").remove();
+            AbilitaBotoesComparacao();
+        }
+
+        function InformarAnalisePostura() {
+
+            if ($('#sPosCos').val() === '0' || $('#sPosBra').val() === '0' || $('#sPosPer').val() === '0' || $('#sPosEsf').val() === '0') {
+                alert("Para adicionar uma Análise deve-se selecionar todas as posturas.");
+                return
+            }
+
+            Dados = {
+                ID: 0,
+                ID_Analise: 0,
+
+                IB: IndiceBraco,
+                IP: IndicePerna,
+                IE: IndiceEsforco,
+                IC: IndiceCosta,
+                Index: indiceAnalise,
+
+                IBDescricao: $('#sPosBra option:selected').text(),
+                IPDescricao: $('#sPosPer option:selected').text(),
+                IEDescricao: $('#sPosEsf option:selected').text(),
+                ICDescricao: $('#sPosCos option:selected').text(),
+                AcaoDescricao: AcaoParaTomar
+            };
+
+            ListaAnalisePostura[indiceAnalise] = Dados;
+
+            indiceAnalise++;
+            AnaliseAdicionada++;
+
+            var AreaAnalisesOWASInformada = $('#AreaAnalisesOWASInformada');
+            AreaAnalisesOWASInformada.append();
+
+            var SubArea = $('#SubAreaAnaliseInformada');
+
+            var Area = $('#AreaAnalisesOWASInformada');
+            Area.append("<div id=\"subAreaTipoAnaliseAdd\"></div>");
+
+            var SubArea = $('#subAreaTipoAnaliseAdd');
+            SubArea.remove();
+
+            Area.append("<div id=\"subAreaTipoAnaliseAdd\"></div>");
+            SubArea = $('#subAreaTipoAnaliseAdd');
+
+            for (var i = 0; i < ListaAnalisePostura.length; i++) {
+
+                SubArea.append("<div class=\"ml-1 small\" id=\"col_" + ListaAnalisePostura[i].Index + "\">" +
+                    "<div class=\"alert alert-info alert-dismissible fade show mb-0 mt-1\" role=\"alert\" data-toggle=\"collapse\" href=\"#DescricaoAnalise_" + ListaAnalisePostura[i].Index + "\" aria-expanded=\"false\" aria-controls=\"DescricaoAnalise\">" +
+                    "Análise de Postura Informada" +
+                    "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\" onclick=\"RemoverAnalisePostura(" + ListaAnalisePostura[i].Index + ")\">" +
+                    "<span aria-hidden=\"true\">&times;</span>" +
+                    "</button>" +
+                    "</div>" +
+                    "<div class=\"collapse mt-0\" id=\"DescricaoAnalise_" + i + "\">" +
+                    "<div class=\"card rounded-0\">" +
+                    "<p class=\"small m-0 pl-2 pt-1\"><span class=\"font-weight-bold\"> Postura das Costa:</span> <span id=\"posCos\">" + ListaAnalisePostura[i].ICDescricao + "</span></p>" +
+                    "<p class=\"small m-0 pl-2\"><span class=\"font-weight-bold\">Postura dos Braços: </span><span id=\"posBra\">" + ListaAnalisePostura[i].IBDescricao + "</span></p>" +
+                    "<p class=\"small m-0 pl-2\"><span class=\"font-weight-bold\">Postura das Pernas: </span><span id=\"posPer\">" + ListaAnalisePostura[i].IPDescricao + "</span></p>" +
+                    "<p class=\"small m-0 pl-2\"><span class=\"font-weight-bold\">Esforço: </span><span id=\"posEsf\">" + ListaAnalisePostura[i].IEDescricao + "</span></p>" +
+                    "<p class=\"small m-0 pl-2 pb-1\"><span class=\"font-weight-bold\">Ação: </span><span id=\"posEsf\">" + ListaAnalisePostura[i].AcaoDescricao + "</span></p>" +
+                    "</div>" +
+                    "</div>" +
+                    "</div>");
+            }
+
+            LimparInputsPostura();
+
+            //LancarBoletim();
+
+        }
+
+        function RemoverAnalisePostura(ID) {
+
+            AnaliseRemovida++;
+
+            var DivRemover = $('#DescricaoAnalise_' + ID);
+            var ColRemover = $('#Col_' + ID);
+            var ListaAux = [];
+            var contador = 0;
+
+            ListaAux.splice(0, ListaAux.length);
+
+            for (var i = 0; i < ListaAnalisePostura.length; i++) {
+                if (ID !== ListaAnalisePostura[i].Index) {
+                    ListaAnalisePostura[i].Index = contador;
+                    ListaAux[contador] = ListaAnalisePostura[i];
+                    contador++;
+                }
+            }
+
+            ListaAnalisePostura.splice(0, ListaAnalisePostura.length);
+
+            ListaAnalisePostura = ListaAux;
+
+            indiceAnalise = contador;
+
+            DivRemover.remove();
+
+            LimparInputsPostura();
+
+            if (AnaliseAdicionada === AnaliseRemovida) {
+                ListaAnalisePostura.splice(0, ListaAnalisePostura.length);
+                ListaAux.splice(0, ListaAux.length);
+                indiceAnalise = 0;
+                contador = 0;
+                AnaliseAdicionada = 0;
+                AnaliseRemovida = 0;
+            }
+        }
+
+        function LancarBoletim() {
+
+            $('#ModalPreCadastro').modal('hide');
+
+            var DataBoletim = $('#CampoData').val();
+            var NomeAvaliador = $('#NomeAvaliador').val();
+            var Setor = $('#SetorSelecionado').val();
+            var Atividade = $('#AtividadeSelecionado').val();
+            var Descricao = $('#DescricaoSelecionado').val();
+            var HoraInicio = $('#HoraInicio').val();
+            var HoraFinal = $('#HoraTermino').val();
+            var TempoGasto = $('#TempoGastoInput').val();
+            var Local = $('#LocalSelecionado').val();
+            var ListaPostura = ListaAnalisePostura;
+            var ListaNasaTlx = ListaAnaliseNASATLX;
+            var CheckListUm = $('#SubAreaGrupoID1').text();
+            var CheckListDois = $('#SubAreaGrupoID2').text();
+
+            var Boletim = {
+                atividade: Atividade,
+                dataanalise: DataBoletim,
+                descricao: Descricao,
+                nomefiscal: NomeAvaliador,
+                setor: Setor,
+                lista: ListaPostura,
+                listanasa: ListaNasaTlx,
+                horainicio: HoraInicio,
+                horatermino: HoraTermino,
+                tempogasto: TempoGasto,
+                local: Local,
+                checklistum: CheckListUm,
+                checklistdois: CheckListDois
+            };
+
+            console.log("CheckListUm: " + CheckListUm);
+            console.log("CheckListDois: " + CheckListDois);
+
+            $.ajax({
+                type: "POST",
+                url: "/Boletim/GravarAnalise",
+                data: Boletim,
+                dataType: "html",
+                success: function (response) {
+
+                    var RetornoLancamento = $('#RetornoLancamento');
+
+                    var Codigo = response;
+
+                    //var msg = "<div class=\"alert alert-success alert-dismissible fade show\" role=\"alert\">" +
+                    //    "Boletim lança com sucesso! <strong>N° " + Codigo + "</strong> !" +
+                    //    "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">" +
+                    //    "<span aria-hidden=\"true\">&times;</span>" +
+                    //    "</button>" +
+                    //    "</div>";
+
+                    //RetornoLancamento.append(msg);
+
+                    LimparInputsCabecalho();
+                    LimparInputsPostura();
+                    LimparInputsNasaTLX();
+
+                    $('#modalTitle').text("Sucesso !");
+
+                    $('#modalBody').text("Boletim Lançado com Sucesso. Segue o N° " + Codigo + " !");
+
+                    $('#ModalRetornoBoletim').modal('show');
+
+                },
+                failure: function (response) {
+                    $('#modalTitle').text("Falha !");
+
+                    $('#modalBody').text("Ops! Houve uma Falha em Lançar o Boletim , tente novamente por favor!");
+
+                    $('#ModalRetornoBoletim').modal('show');
+                },
+                error: function (response) {
+                    $('#modalTitle').text("Erro !");
+
+                    $('#modalBody').text("Ops! Houve um Erroem Lançar o Boletim , tente novamente por favor, se percistir contate o Administrador!");
+
+                    $('#ModalRetornoBoletim').modal('show');
+                }
+            });
+        }
+
+        function RetornaLista() {
+            LimparInputsPostura;
+        }
+
+        function InformarAnaliseCargaMental() {
+
+            var RangeDemandaMental = $('#valorDM').val();
+            var RangeDemandaFisica = $('#valorDF').val();
+            var RangeDemandaTemporal = $('#valorDT').val();
+            var RangeDemandaEsforco = $('#valorES').val();
+            var RangeDemandaPerformace = $('#valorPE').val();
+            var RangeDemandaFrustacao = $('#valorFR').val();
+
+            if (Comparacoes != 15) {
+                alert("Para adicionar uma Análise deve-se realizar todas as Comparações de Pares");
+                return
+            }
+
+            Dados = {
+                rangeDM: RangeDemandaMental,
+                rangeDF: RangeDemandaFisica,
+                rangeDT: RangeDemandaTemporal,
+                rangeDE: RangeDemandaEsforco,
+                rangePE: RangeDemandaPerformace,
+                rangeFR: RangeDemandaFrustacao,
+
+                escalaFisica: EscalaFisica,
+                escalaMental: EscalaMental,
+                escalaPerformace: EscalaPerformace,
+                escalaEsforco: EscalaEsforco,
+                escalaFrustacao: EscalaFrustracao,
+                escalaTemporal: EscalaTemporal
+            };
+
+            $.ajax({
+                type: "GET",
+                url: "/Boletim/MontaTabelaNASATLX",
+                data: Dados,
+                dataType: "html",
+                success: function (response) {
+
+                    var responseEditado = response.replace("\"", "");
+                    responseEditado = responseEditado.replace("\"", "");
+
+                    var HTML = "<div class=\"ml-1 small\" id=\"NASATLX\">" +
+                        "<div class=\"alert alert-info alert-dismissible fade show mb-0 mt-1\" role=\"alert\" data-toggle=\"collapse\" href=\"#AnaliseNASATLX\" aria-expanded=\"false\" aria-controls=\"DescricaoAnalise\">" +
+                        "Análise de Cognitiva Informada" +
+                        "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\" onclick=\"RemoveAnalinseNASATLX()\">" +
+                        "<span aria-hidden=\"true\">&times;</span>" +
+                        "</button>" +
+                        "</div>" +
+                        "<div class=\"collapse mt-0\" id=\"AnaliseNASATLX\">" +
+                        "<div id=\"AreaTabelaNASATLX\" class=\"card rounded-0\">" +
+                        responseEditado +
+                        "</div>" +
+                        "</div>" +
+                        "</div>";
+
+                    var rHTML = "<div class=\"ml-1 small\" id=\"NASATLX\">" +
+                        "<div class=\"alert alert-info alert-dismissible fade show mb-0 mt-1\" role=\"alert\" data-toggle=\"collapse\" href=\"#AnaliseNASATLX\" aria-expanded=\"false\" aria-controls=\"DescricaoAnalise\">" +
+                        "Análise de Cognitiva Informada" +
+                        "</div>" +
+                        "<div class=\"collapse mt-0\" id=\"AnaliseNASATLX\">" +
+                        "<div id=\"AreaTabelaNASATLX\" class=\"card rounded-0\">" +
+                        responseEditado +
+                        "</div>" +
+                        "</div>" +
+                        "</div>";
+
+                    document.getElementById("btnInformaAnaliise").disabled = true;
+
+                    var AreaAnalisesNASATLXInformada = $('#AreaAnalisesNASATLXInformada');
+                    AreaAnalisesNASATLXInformada.append(HTML);
+
+                    ListaAnaliseNASATLX = Dados;
+                    TabelaAnaliseNASATLX = rHTML;
+
+                },
+                failure: function (response) {
+                    alert(response.responseText);
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+
+        }
+
+        function RegistraComparacao(Botao1, Botao2, Carga) {
+
+            var btn1 = "btn_" + Botao1 + "_Comp";
+            var btn2 = "btn_" + Botao2 + "_Comp";
+
+            if (Carga === 1) {
+                EscalaMental++;
+                Comparacoes++;
+                document.getElementById(btn1).disabled = true;
+                document.getElementById(btn2).disabled = true;
+            } else if (Carga === 2) {
+                EscalaFisica++;
+                Comparacoes++;
+                document.getElementById(btn1).disabled = true;
+                document.getElementById(btn2).disabled = true;
+            } else if (Carga === 3) {
+                EscalaTemporal++;
+                Comparacoes++;
+                document.getElementById(btn1).disabled = true;
+                document.getElementById(btn2).disabled = true;
+            } else if (Carga === 4) {
+                EscalaPerformace++;
+                Comparacoes++;
+                document.getElementById(btn1).disabled = true;
+                document.getElementById(btn2).disabled = true;
+            } else if (Carga === 5) {
+                EscalaEsforco++;
+                Comparacoes++;
+                document.getElementById(btn1).disabled = true;
+                document.getElementById(btn2).disabled = true;
+            } else if (Carga === 6) {
+                EscalaFrustracao++;
+                Comparacoes++;
+                document.getElementById(btn1).disabled = true;
+                document.getElementById(btn2).disabled = true;
+            }
+        }
+
+        function AbilitaBotoesComparacao() {
+            EscalaMental = 0;
+            EscalaFisica = 0;
+            EscalaTemporal = 0;
+            EscalaPerformace = 0;
+            EscalaEsforco = 0;
+            EscalaFrustracao = 0;
+            Comparacoes = 0;
+
+            for (var i = 1; i != 31; i++) {
+                var btn = "btn_" + i + "_Comp";
+
+                document.getElementById(btn).disabled = false;
+            }
+        }
+
+        function RemoveAnalinseNASATLX() {
+            var AreaAnalisesNASATLXInformada = $('#AreaAnalisesNASATLXInformada');
+            AreaAnalisesNASATLXInformada.append("<div id=\"SubAreaAnaliseNASATLXInformada\"></div>");
+
+            var SubArea = $('#SubAreaAnaliseNASATLXInformada');
+            var Tabela = $('#AreaTabelaNASATLX');
+            var NASATLX = $('#NASATLX');
+
+            var rNASATLX = $('#rsubAreaTipoAnaliseAdd');
+
+            Tabela.remove();
+            SubArea.remove();
+            NASATLX.remove();
+            SubArea.remove();
+            rNASATLX.remove();
+
+            AreaAnalisesNASATLXInformada.append("<div id=\"SubAreaAnaliseNASATLXInformada\"></div>");
+            SubArea = $('#SubAreaAnaliseNASATLXInformada');
+
+            document.getElementById('btnInformaAnaliise').disabled = false;
+
+            //Zera a Variavel que tem a Tabela
+            TabelaAnaliseNASATLX = "";
+
+            var rAreaAnalisesOWASInformadaRevisao = $('#NASATLX');
+            rAreaAnalisesOWASInformadaRevisao.remove();
+
+            var rAreaAnalisesOWASInformada = $('#rAnaliseOWAS');
+            rAreaAnalisesOWASInformada.append();
+
+            var rSubArea = $('#SubAreaAnaliseInformada');
+
+            var rArea = $('#rAnaliseOWAS');
+            rArea.append("<div id=\"rsubAreaTipoAnaliseAdd\"></div>");
+
+            var rSubArea = $('#rsubAreaTipoAnaliseAdd');
+            rSubArea.remove();
+
+            rArea.append("<div id=\"rsubAreaTipoAnaliseAdd\"></div>");
+            rSubArea = $('#rsubAreaTipoAnaliseAdd');
+
+        }
+
+        function PreCadastro() {
+
+            var DataBoletim = $('#CampoData').val();
+            var DataFormatada = dataAtualFormatada(DataBoletim);
+
+            $('#rData').text(DataFormatada);
+            $('#rNomeAvaliador').text($('#NomeAvaliador').val());
+            $('#rSetor').text($('#SetorSelecionado option:selected').text());
+            $('#rAtividade').text($('#AtividadeSelecionado option:selected').text());
+            $('#rDescricao').text($('#DescricaoSelecionado').val());
+            $('#rInicio').text($('#HoraInicio').val());
+            $('#rTermino').text($('#HoraTermino').val());
+            $('#rGasto').text($('#TempoGastoInput').val());
+            $('#rLocal').text($('#LocalSelecionado option:selected').text());
+
+            var ListaOWASReviscao = [];
+            ListaOWASReviscao = ListaAnalisePostura;
+
+            var rAreaAnalisesOWASInformada = $('#rAnaliseOWAS');
+            rAreaAnalisesOWASInformada.append();
+
+            var rSubArea = $('#SubAreaAnaliseInformada');
+
+            var rArea = $('#rAnaliseOWAS');
+            rArea.append("<div id=\"rsubAreaTipoAnaliseAdd\"></div>");
+
+            var rSubArea = $('#rsubAreaTipoAnaliseAdd');
+            rSubArea.remove();
+
+            rArea.append("<div id=\"rsubAreaTipoAnaliseAdd\"></div>");
+            rSubArea = $('#rsubAreaTipoAnaliseAdd');
+
+            for (var z = 0; z < ListaAnalisePostura.length; z++) {
+
+                rSubArea.append("<div class=\"ml-1 small\" id=\"col_" + ListaOWASReviscao[z].Index + "\">" +
+                    "<div class=\"alert alert-info alert-dismissible fade show mb-0 mt-1\" role=\"alert\" data-toggle=\"collapse\" href=\"#rDescricaoAnalise_" + ListaOWASReviscao[z].Index + "\" aria-expanded=\"false\" aria-controls=\"DescricaoAnalise\">" +
+                    "Análise de Postura Informada" +
+                    "</div>" +
+                    "<div class=\"collapse mt-0\" id=\"rDescricaoAnalise_" + z + "\">" +
+                    "<div class=\"card rounded-0\">" +
+                    "<p class=\"small m-0 pl-2 pt-1\"><span class=\"font-weight-bold\"> Postura das Costa:</span> <span id=\"posCos\">" + ListaOWASReviscao[z].ICDescricao + "</span></p>" +
+                    "<p class=\"small m-0 pl-2\"><span class=\"font-weight-bold\">Postura dos Braços: </span><span id=\"posBra\">" + ListaOWASReviscao[z].IBDescricao + "</span></p>" +
+                    "<p class=\"small m-0 pl-2\"><span class=\"font-weight-bold\">Postura das Pernas: </span><span id=\"posPer\">" + ListaOWASReviscao[z].IPDescricao + "</span></p>" +
+                    "<p class=\"small m-0 pl-2\"><span class=\"font-weight-bold\">Esforço: </span><span id=\"posEsf\">" + ListaOWASReviscao[z].IEDescricao + "</span></p>" +
+                    "<p class=\"small m-0 pl-2 pb-1\"><span class=\"font-weight-bold\">Ação: </span><span id=\"posEsf\">" + ListaOWASReviscao[z].AcaoDescricao + "</span></p>" +
+                    "</div>" +
+                    "</div>" +
+                    "</div>");
+            }
+
+            var rAreaAnalisesNASATLXInformada = $('#rAnaliseNASATLX');
+            rAreaAnalisesNASATLXInformada.append(TabelaAnaliseNASATLX);
+            //Zera a Variavel que tem a Tabela
+            TabelaAnaliseNASATLX = "";
+
+            console.log(TmpCodigoBio);
+            console.log(TmpCodigoErg);
+            if (TmpCodigoBio != "0") { $('#checkList1Confirma').text("Sim"); } else { $('#checkList1Confirma').text("Não"); }
+            if (TmpCodigoErg != "0") { $('#checkList2Confirma').text("Sim"); } else { $('#checkList2Confirma').text("Não"); }
+
+
+            $('#ModalPreCadastro').modal('show');
+        }
+
+        function dataAtualFormatada(data) {
+
+            if (data === "") {
+                return "Não foi definido uma data.";
+            }
+
+            data = data.replace("-", "");
+            data = data.replace("-", "");
+
+            console.log(data);
+
+            var Dia = data.substring(6, 9);
+            var Mes = data.substring(4, 6);
+            var Ano = data.substring(0, 4);
+
+            return Dia + "/" + Mes + "/" + Ano;
+        }
+
+        function BuscaLocal(CodSetor) {
+            $.ajax({
+                type: "GET",
+                url: "/Boletim/BuscaLocal",
+                data: { CodSetor },
+                dataType: "html",
+                success: function (response) {
+
+                    locais = JSON.parse(response);
+
+                    // Limpo o Combobox
+                    $('#LocalSelecionado').empty();
+
+                    // Adiciona as demais linhas (dinâmico).
+                    $.each(locais, function (id, locais) {
+                        $("#LocalSelecionado").append($('<option>', {
+                            value: locais.iD_Local,
+                            text: locais.nome
+                        }));
+                    });
+
+                }
+            });
+
+            }
+
+        function CadastroNovaAtividade()
+        {
+            var nome = $('#NomeAtividade').val();
+            var descricao = $('#DescricaoAtividade').val();
+
+            $.ajax({
+                type: "post",
+                url: "/Atividades/CadastroNovaAtividade",
+                dataType: "json",
+                data: { nome, descricao },
+                success: function (retorno) {
+
+                    if (retorno.length > 0) {
+                        var str;
+
+                        $(retorno).each(function () {
+                            str += '<option value=' + this.id + '>' + this.nomeAtividade + '</option>';
+                        })
+
+                        console.log(str);
+
+                        $('#AtividadeSelecionado').empty();
+                        $('#AtividadeSelecionado').html(str);
+
+                        $('#CadastrarNovaAtividade').modal('hide')
+                    } 
+
+                },
+                error: function (xhr, status) {
+                    console.log("Algum erro");
+                }
+            });
+        }
+
+    </script>
+
+}
