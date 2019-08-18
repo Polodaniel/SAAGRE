@@ -85,7 +85,7 @@ using SAGRE.Models;
             <li class=""breadcrumb-item"">");
             EndContext();
             BeginContext(483, 54, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "caac84f151044720803469c46f141b1c", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "9611e4bc9b114c82a792a2fa4062f914", async() => {
                 BeginContext(527, 6, true);
                 WriteLiteral("Ínicio");
                 EndContext();
@@ -119,7 +119,7 @@ using SAGRE.Models;
             WriteLiteral("</li>\r\n        </ol>\r\n    </nav>\r\n\r\n    <div class=\"row\">\r\n        <div class=\"col\">\r\n            <div class=\"row mb-3\">\r\n                <div class=\"col\">\r\n                    ");
             EndContext();
             BeginContext(806, 65, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "40cee751342540f8a995687862b16767", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "f4ac99b1a7044742bf2de6aa4d9cc35c", async() => {
                 BeginContext(853, 14, true);
                 WriteLiteral("Adicionar Novo");
                 EndContext();
@@ -251,7 +251,7 @@ using SAGRE.Models;
             WriteLiteral("\r\n                                </td>\r\n                                <td class=\"text-center\">\r\n                                    ");
             EndContext();
             BeginContext(3058, 278, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "67ac2568572a40b38679bcbe0987338a", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "e26658e8ca97496a96b0fcba9ae3446c", async() => {
                 BeginContext(3226, 106, true);
                 WriteLiteral("\r\n                                        <i class=\"far fa-eye\"></i>\r\n                                    ");
                 EndContext();
@@ -291,7 +291,7 @@ using SAGRE.Models;
             WriteLiteral("\r\n                                    ");
             EndContext();
             BeginContext(3374, 272, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "7fbb0facc17948ff9d245d96cd64f28d", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "25402b12c27d4eb39067c6bc0d2afce4", async() => {
                 BeginContext(3535, 107, true);
                 WriteLiteral("\r\n                                        <i class=\"far fa-edit\"></i>\r\n                                    ");
                 EndContext();
@@ -331,7 +331,7 @@ using SAGRE.Models;
             WriteLiteral("\r\n                                    ");
             EndContext();
             BeginContext(3684, 280, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "468cc18e86b045b0bc77ee6bb18e00df", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "4233e353885f4b9f94af3989f08a81de", async() => {
                 BeginContext(3848, 112, true);
                 WriteLiteral("\r\n                                        <i class=\"far fa-trash-alt\"></i>\r\n                                    ");
                 EndContext();

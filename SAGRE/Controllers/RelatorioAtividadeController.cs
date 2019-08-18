@@ -165,8 +165,10 @@ namespace SAGRE.Controllers
                 var Atividade = _context.AtividadesModel.Where(x => x.ID > 0).ToList();
                 var Local = _context.LocalModel.Where(x => x.ID > 0).ToList();
 
-                var CheckListAnaliseCondBio = _context.CheckListAnaliseCondBio.Where(x => x.ID > 0).ToList();
-                var CheckListAnaliseCondErg = _context.CheckListAnaliseCondErg.Where(x => x.ID > 0).ToList();
+                //var CheckListAnaliseCondBio = _context.CheckListAnaliseCondBio.Where(x => x.ID > 0).ToList();
+                //var CheckListAnaliseCondErg = _context.CheckListAnaliseCondErg.Where(x => x.ID > 0).ToList();
+                var CheckListAnaliseCondBio = _context.CheckListAnaliseCondBio.Where(x => x.ID_Boletim > 0).ToList();
+                var CheckListAnaliseCondErg = _context.CheckListAnaliseCondErg.Where(x => x.ID_Boletim > 0).ToList();
                 #endregion
 
                 #region HTML para Editar
@@ -203,11 +205,11 @@ namespace SAGRE.Controllers
                 sbTotalizador.AppendLine("              <br class='mt-0'>#Analise_Cognitiva#</br>                                                                  ");
                 sbTotalizador.AppendLine("          </div>                                                                                                         ");
                 sbTotalizador.AppendLine("          <div class='col'>                                                                                              ");
-                sbTotalizador.AppendLine("              <span class='small mb-0'><span class='small font-weight-bold'>Check List Análise Ergonomia</span></span>   ");
+                sbTotalizador.AppendLine("              <span class='small mb-0'><span class='small font-weight-bold'>Total Check List Análise Ergonomia</span></span>   ");
                 sbTotalizador.AppendLine("              <br class='mt-0'>#Check_Erg#</br>                                                                          ");
                 sbTotalizador.AppendLine("          </div>                                                                                                         ");
                 sbTotalizador.AppendLine("          <div class='col'>                                                                                              ");
-                sbTotalizador.AppendLine("              <span class='small mb-0'><span class='small font-weight-bold'>Check List Análise Biomecânica </span></span>");
+                sbTotalizador.AppendLine("              <span class='small mb-0'><span class='small font-weight-bold'>Total Check List Análise Biomecânica </span></span>");
                 sbTotalizador.AppendLine("              <br class='mt-0'>#Check_Bio#</br>                                                                          ");
                 sbTotalizador.AppendLine("          </div>                                                                                                         ");
                 sbTotalizador.AppendLine("     </div>                                                                                                              ");
@@ -484,7 +486,7 @@ namespace SAGRE.Controllers
                 HtmlBaseTotalizador = HtmlBaseTotalizador.Replace("#Analise_Cognitiva#", AnaliseCognitiva.ToString());
                 HtmlBaseTotalizador = HtmlBaseTotalizador.Replace("#Check_Erg#", CheckListAnaliseCondErg.Where(x => x.ID_Boletim > 0).Count().ToString());
                 HtmlBaseTotalizador = HtmlBaseTotalizador.Replace("#Check_Bio#", CheckListAnaliseCondBio.Where(x => x.ID_Boletim > 0).Count().ToString());
-
+                
                 return HtmlBaseTotalizador + HtmlRetorno;
             }
             else

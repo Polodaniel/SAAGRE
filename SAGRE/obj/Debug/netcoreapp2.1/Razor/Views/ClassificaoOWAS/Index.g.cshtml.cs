@@ -84,7 +84,7 @@ using SAGRE.Models;
             <li class=""breadcrumb-item"">");
             EndContext();
             BeginContext(512, 54, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "9e6676b7f8234454a1e2b20aa4bc64b2", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "5eca10d147f14174a7a312083afd9a49", async() => {
                 BeginContext(556, 6, true);
                 WriteLiteral("Ínicio");
                 EndContext();
@@ -118,7 +118,7 @@ using SAGRE.Models;
             WriteLiteral("</li>\r\n        </ol>\r\n    </nav>\r\n\r\n    <div class=\"row\">\r\n        <div class=\"col\">\r\n            <div class=\"row mb-3\">\r\n                <div class=\"col\">\r\n                    ");
             EndContext();
             BeginContext(835, 84, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("button", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "11f530d5c31842fba097ce3ebc42e650", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("button", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "d3fceb8b87e846b3b66300d5fa3f315d", async() => {
                 BeginContext(896, 14, true);
                 WriteLiteral("Adicionar Novo");
                 EndContext();
@@ -230,7 +230,7 @@ using SAGRE.Models;
             WriteLiteral("\r\n                                </td>\r\n                                <td class=\"align-middle text-center\">\r\n                                    ");
             EndContext();
             BeginContext(3228, 272, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "154084a501a1471badf577feb616c1e7", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "d8a2c2bf9b9e4b24a0e2bd1cb0bfb5ab", async() => {
                 BeginContext(3390, 106, true);
                 WriteLiteral("\r\n                                        <i class=\"far fa-eye\"></i>\r\n                                    ");
                 EndContext();
@@ -270,7 +270,7 @@ using SAGRE.Models;
             WriteLiteral("\r\n                                    ");
             EndContext();
             BeginContext(3538, 266, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "dbabd5ac83a74deba044b5e5246984dd", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "becda4e73f2f468ebf4fe7c78c93e0ca", async() => {
                 BeginContext(3693, 107, true);
                 WriteLiteral("\r\n                                        <i class=\"far fa-edit\"></i>\r\n                                    ");
                 EndContext();
@@ -310,7 +310,7 @@ using SAGRE.Models;
             WriteLiteral("\r\n                                    ");
             EndContext();
             BeginContext(3842, 274, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "8f16fb008cca403da8ad42d2f3ed9f51", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "b5106a2131b94c2592c1ad2953ae706f", async() => {
                 BeginContext(4000, 112, true);
                 WriteLiteral("\r\n                                        <i class=\"far fa-trash-alt\"></i>\r\n                                    ");
                 EndContext();

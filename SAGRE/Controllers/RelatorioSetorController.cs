@@ -203,11 +203,11 @@ namespace SAGRE.Controllers
                 sbTotalizador.AppendLine("              <br class='mt-0'>#Analise_Cognitiva#</br>                                                                  ");
                 sbTotalizador.AppendLine("          </div>                                                                                                         ");
                 sbTotalizador.AppendLine("          <div class='col'>                                                                                              ");
-                sbTotalizador.AppendLine("              <span class='small mb-0'><span class='small font-weight-bold'>Check List Análise Ergonomia</span></span>   ");
+                sbTotalizador.AppendLine("              <span class='small mb-0'><span class='small font-weight-bold'>Total Check List Análise Ergonomia</span></span>   ");
                 sbTotalizador.AppendLine("              <br class='mt-0'>#Check_Erg#</br>                                                                          ");
                 sbTotalizador.AppendLine("          </div>                                                                                                         ");
                 sbTotalizador.AppendLine("          <div class='col'>                                                                                              ");
-                sbTotalizador.AppendLine("              <span class='small mb-0'><span class='small font-weight-bold'>Check List Análise Biomecânica </span></span>");
+                sbTotalizador.AppendLine("              <span class='small mb-0'><span class='small font-weight-bold'>Total Check List Análise Biomecânica </span></span>");
                 sbTotalizador.AppendLine("              <br class='mt-0'>#Check_Bio#</br>                                                                          ");
                 sbTotalizador.AppendLine("          </div>                                                                                                         ");
                 sbTotalizador.AppendLine("     </div>                                                                                                              ");

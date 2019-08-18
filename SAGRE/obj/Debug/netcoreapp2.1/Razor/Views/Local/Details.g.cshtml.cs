@@ -68,7 +68,7 @@ using SAGRE.Models;
             WriteLiteral("\r\n    <div class=\"col mt-2\">\r\n        <nav aria-label=\"breadcrumb\">\r\n            <ol class=\"breadcrumb\">\r\n                <li class=\"breadcrumb-item\">");
             EndContext();
             BeginContext(237, 54, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "731d6a17d7eb4fb4acf32fb8e46052c2", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "1a188d99fd0d4a46a74965251455cb69", async() => {
                 BeginContext(281, 6, true);
                 WriteLiteral("Ínicio");
                 EndContext();
@@ -92,7 +92,7 @@ using SAGRE.Models;
             WriteLiteral("</li>\r\n                <li class=\"breadcrumb-item\">");
             EndContext();
             BeginContext(342, 54, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "f9569e51e26f47508bd2bf33a2680576", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "a3adce165c5c4972bf3c00b3f230c322", async() => {
                 BeginContext(387, 5, true);
                 WriteLiteral("Local");
                 EndContext();
@@ -282,7 +282,7 @@ using SAGRE.Models;
                                 ");
             EndContext();
             BeginContext(4156, 65, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "97873a05cbae4bf38c6bfc0475038289", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "0a083fbb9691431eabd19eb5c44a99e8", async() => {
                 BeginContext(4211, 6, true);
                 WriteLiteral("Voltar");
                 EndContext();
@@ -305,7 +305,7 @@ using SAGRE.Models;
             WriteLiteral("\r\n                                ");
             EndContext();
             BeginContext(4255, 87, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "6fd12c6ed7534bdaa23b96bb40b51b40", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "4e4e2b9d9eb643009ed27cfc15121833", async() => {
                 BeginContext(4332, 6, true);
                 WriteLiteral("Editar");
                 EndContext();
