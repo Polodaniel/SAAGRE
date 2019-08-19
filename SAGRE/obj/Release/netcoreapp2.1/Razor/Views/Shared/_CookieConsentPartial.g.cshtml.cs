@@ -108,7 +108,7 @@ using Microsoft.AspNetCore.Http.Features;
             WriteLiteral("\" @*onclick=\"AceitaCoockie()\"*@>Aceitar</button>\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </nav>\r\n    ");
             EndContext();
             BeginContext(1603, 51, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("script", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "a02a72e8de194ee3a84af112b2b30428", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("script", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "85f6a7c043434a9094c7b66c73a4e695", async() => {
             }
             );
             __Microsoft_AspNetCore_Mvc_Razor_TagHelpers_UrlResolutionTagHelper = CreateTagHelper<global::Microsoft.AspNetCore.Mvc.Razor.TagHelpers.UrlResolutionTagHelper>();

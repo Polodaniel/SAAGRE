@@ -15,5 +15,6 @@
     <WebStackScaffolding_ViewDialogWidth>600</WebStackScaffolding_ViewDialogWidth>
     <NameOfLastUsedPublishProfile>saagre - Web Deploy</NameOfLastUsedPublishProfile>
     <WebStackScaffolding_LayoutPageFile />
+    <ShowAllFiles>false</ShowAllFiles>
   </PropertyGroup>
 </Project>

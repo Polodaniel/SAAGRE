@@ -66,7 +66,7 @@ using SAGRE.Models;
             WriteLiteral("    <html>\r\n\r\n    ");
             EndContext();
             BeginContext(152, 240, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("head", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "cd302a7108ce49f3aa500189e65441e2", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("head", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "80a950ee44fb48ac8a8d4a319e81d8f2", async() => {
                 BeginContext(158, 227, true);
                 WriteLiteral("\r\n        <link rel=\"stylesheet\" href=\"https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css\" integrity=\"sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO\" crossorigin=\"anonymous\">\r\n    ");
                 EndContext();
@@ -86,7 +86,7 @@ using SAGRE.Models;
             WriteLiteral("\r\n\r\n    ");
             EndContext();
             BeginContext(400, 2063, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("body", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "4a283df4b34a4d029ad23ae4eb067d94", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("body", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "ab73174d7bba47a3a8b98095a7916f61", async() => {
                 BeginContext(426, 2030, true);
                 WriteLiteral(@"
 

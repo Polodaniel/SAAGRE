@@ -44,8 +44,8 @@
                                 @Html.DisplayNameFor(model => model.Atividade)
                             </th>
                             <th class="p-2">
-                                    @Html.DisplayNameFor(model => model.Descricao)
-                                </th>
+                                @Html.DisplayNameFor(model => model.Descricao)
+                            </th>
                             <th class="p-2" style="width:50px;"></th>
                         </tr>
                     </thead>
@@ -73,8 +73,8 @@
                                     @Html.DisplayFor(modelItem => item.Atividade)
                                 </td>
                                 <td class="align-middle">
-                                        @Html.DisplayFor(modelItem => item.Descricao)
-                                    </td>
+                                    @Html.DisplayFor(modelItem => item.Descricao)
+                                </td>
                                 <td class="text-center">
                                     <a asp-action="Details" asp-route-id="@item.ID" class="btn btn-sm btn-dark" style="padding:2px;" data-toggle="tooltip" data-placement="bottom" title="Visualizar">
                                         <i class="far fa-eye"></i>
@@ -108,9 +108,13 @@
     <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.6/js/buttons.print.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.6/js/buttons.bootstrap4.min.js"></script>
 
+    <script type="text/javascript" language="javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.min.js"></script>
+    <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/plug-ins/1.10.10/sorting/datetime-moment.js"></script>
+
     <script>
         $(document).ready(function () {
             $('#table_id').DataTable();
+            $.fn.dataTable.moment('DD/MM/YYYY');
         });
     </script>
 
